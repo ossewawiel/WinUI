@@ -158,10 +158,11 @@
     <ClInclude Include="win_app.h" />
     <ClInclude Include="win_item.h" />
     <ClInclude Include="win_main.h" />
-    <ClInclude Include="win_menu.h" />
+    <ClInclude Include="win_menu_command.h" />
+    <ClInclude Include="win_menu_item.h" />
     <ClInclude Include="win_menu_bar.h" />
     <ClInclude Include="win_msg.h" />
-    <ClInclude Include="win_sub_menu.h" />
+    <ClInclude Include="win_menu_sub.h" />
     <ClInclude Include="win_util.h" />
     <ClInclude Include="win_window.h" />
   </ItemGroup>
@@ -171,9 +172,10 @@
     <ClCompile Include="WinUI.cpp" />
     <ClCompile Include="win_app.cpp" />
     <ClCompile Include="win_item.cpp" />
-    <ClCompile Include="win_menu.cpp" />
+    <ClCompile Include="win_menu_command.cpp" />
+    <ClCompile Include="win_menu_item.cpp" />
     <ClCompile Include="win_menu_bar.cpp" />
-    <ClCompile Include="win_sub_menu.cpp" />
+    <ClCompile Include="win_menu_sub.cpp" />
     <ClCompile Include="win_window.cpp" />
   </ItemGroup>
   <ItemGroup>

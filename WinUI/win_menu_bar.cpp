@@ -7,19 +7,19 @@ win_menu_bar::win_menu_bar(NN(win_window*) window) :
 	set_menu();
 }
 
-win_sub_menu& win_menu_bar::create_file_menu()
+win_menu_sub& win_menu_bar::create_file_menu()
 {
 	return create_sub_menu(L"&File");
 }
 
-win_sub_menu& win_menu_bar::create_edit_menu()
+win_menu_sub& win_menu_bar::create_edit_menu()
 {
 	return create_sub_menu(L"&Edit");
 }
 
-win_sub_menu& win_menu_bar::create_sub_menu(std::wstring const& name)
+win_menu_sub& win_menu_bar::create_sub_menu(std::wstring const& name)
 {
-	_sub_menus.emplace_back(win_sub_menu{ this, _sub_menus.size(), name });
+	_sub_menus.emplace_back(win_menu_sub{ this, _sub_menus.size(), name });
 	return _sub_menus.back();
 	win::draw_menu_bar(window()->item_handle());
 }

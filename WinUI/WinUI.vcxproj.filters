@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="win_menus">
+      <UniqueIdentifier>{a2358065-928e-4775-9e8c-8860befd0e6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -48,17 +51,20 @@
     <ClInclude Include="win_item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win_menu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win_sub_menu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win_menu_bar.h">
-      <Filter>Header Files</Filter>
+      <Filter>win_menus</Filter>
+    </ClInclude>
+    <ClInclude Include="win_menu_item.h">
+      <Filter>win_menus</Filter>
+    </ClInclude>
+    <ClInclude Include="win_menu_sub.h">
+      <Filter>win_menus</Filter>
+    </ClInclude>
+    <ClInclude Include="win_menu_command.h">
+      <Filter>win_menus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -80,14 +86,17 @@
     <ClCompile Include="win_item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_sub_menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win_menu_bar.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>win_menus</Filter>
+    </ClCompile>
+    <ClCompile Include="win_menu_item.cpp">
+      <Filter>win_menus</Filter>
+    </ClCompile>
+    <ClCompile Include="win_menu_sub.cpp">
+      <Filter>win_menus</Filter>
+    </ClCompile>
+    <ClCompile Include="win_menu_command.cpp">
+      <Filter>win_menus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

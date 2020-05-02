@@ -11,8 +11,7 @@ LRESULT CALLBACK win_app::callback_msg_handler(HWND hWnd, UINT message, WPARAM w
     if (win_item::item_map().empty() || win_item::item_map().count(hWnd) == 0)
         return DefWindowProc(hWnd, message, wParam, lParam);
 
-    win_item* item = win_item::item_map().at(hWnd);
-    assert(item != nullptr);
+    NN(win_item*) item = win_item::item_map().at(hWnd);
 
     return item->event_handler(message, wParam, lParam);
 
