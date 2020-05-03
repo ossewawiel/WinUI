@@ -241,18 +241,11 @@ namespace win
 		CATCH_RUNTIME_WITH_MSG
 	}
 
-	void static insert_menu_item(HMENU parent_handle, UINT id, std::wstring const& name)
+	void static insert_menu_item(HMENU parent_handle, UINT id, bool by_position, MENUITEMINFO const& mii)
 	{
 		try
 		{
-			MENUITEMINFO mii{};
-			mii.fMask = MIIM_ID | MIIM_STRING | MIIM_DATA | MIIM_SUBMENU;
-			mii.wID = id;
-			mii.fState = MFS_ENABLED;
-			mii.dwTypeData = const_cast<LPWSTR>(name.c_str());
-			mii.cch = name.size();
-			mii.hSubMenu = parent_handle;
-			THROW_IF_WIN32_BOOL_FALSE(InsertMenuItem(parent_handle, 1, FALSE, &mii));
+			THROW_IF_WIN32_BOOL_FALSE(InsertMenuItem(parent_handle, id, FALSE, &mii));
 		}
 		CATCH_RUNTIME_WITH_MSG
 	}

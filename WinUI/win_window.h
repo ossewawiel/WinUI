@@ -26,7 +26,7 @@ protected:
 
 private:
 	win_app* _app{ nullptr };
-
+	
 	//
 
 	on_close_window_type _on_close_window{};

@@ -14,6 +14,6 @@ public:
 	[[nodiscard]] win_menu_sub& create_sub_menu(std::wstring const& name);
 
 private:
-
+	UINT	_position{ 0 };
 	std::vector<win_menu_sub> _sub_menus{};
 };

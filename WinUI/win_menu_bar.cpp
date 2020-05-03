@@ -19,7 +19,8 @@ win_menu_sub& win_menu_bar::create_edit_menu()
 
 win_menu_sub& win_menu_bar::create_sub_menu(std::wstring const& name)
 {
-	_sub_menus.emplace_back(win_menu_sub{ this, _sub_menus.size(), name });
+	_sub_menus.emplace_back(win_menu_sub{ this, _position, name });
 	return _sub_menus.back();
 	win::draw_menu_bar(window()->item_handle());
+	++_position;
 }

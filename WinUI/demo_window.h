@@ -15,5 +15,15 @@ public:
 private:
 	std::unique_ptr<win_menu_bar> _menu_bar{ nullptr };
 	bool on_close();
+
+	enum menu_id
+	{
+		M_F_NEW,
+		M_F_OPEN,
+		M_F_SAVE,
+		M_F_SAVE_AS,
+		M_F_RECENT,
+		M_F_EXIT
+	};
 };
 
