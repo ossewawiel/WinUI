@@ -42,7 +42,7 @@ win_menu_sub& win_menu_sub::operator=(win_menu_sub&& rhs) noexcept
 
 void win_menu_sub::add_action(std::wstring const& text, UINT id, bool enabled)
 {
-	_parent->window()->add_menu_cmd(id, win_menu_cmd_action{ this, text, id, enabled, _has_menu_break });
+	_parent->window()->menu_cmds().emplace(id, std::make_unique<win_menu_command>(win_menu_cmd_action{ this, text, id, enabled, _has_menu_break }));
 	win::draw_menu_bar(window()->item_handle());
 	if (_has_menu_break) _has_menu_break = false;
 
@@ -50,7 +50,7 @@ void win_menu_sub::add_action(std::wstring const& text, UINT id, bool enabled)
 
 void win_menu_sub::add_checkable(std::wstring const& text, UINT id, bool checked)
 {
-	_parent->window()->add_menu_cmd(id, win_menu_cmd_checkable{ this, text, id, true, _has_menu_break });
+	_parent->window()->menu_cmds().emplace(id, std::make_unique<win_menu_command>(win_menu_cmd_checkable{ this, text, id, checked, _has_menu_break }));
 	win::draw_menu_bar(window()->item_handle());
 	if (_has_menu_break) _has_menu_break = false;
 }

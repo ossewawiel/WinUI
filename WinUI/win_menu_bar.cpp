@@ -25,7 +25,7 @@ win_menu_sub& win_menu_bar::create_view_menu()
 
 win_menu_sub& win_menu_bar::create_window_menu()
 {
-	return create_sub_menu(L"&View", M_WINDOW);
+	return create_sub_menu(L"&Window", M_WINDOW);
 }
 
 win_menu_sub& win_menu_bar::create_help_menu()

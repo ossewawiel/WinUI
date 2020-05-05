@@ -301,7 +301,7 @@ namespace win
 			mii.cbSize = sizeof(MENUITEMINFO);
 			mii.fMask = MIIM_STATE;
 			THROW_IF_WIN32_BOOL_FALSE(::GetMenuItemInfo(parent, id, FALSE, &mii));
-			mii.fState = mii.fState == MFS_CHECKED ? MFS_UNCHECKED : MFS_CHECKED;
+			mii.fState ^= MFS_CHECKED;
 			THROW_IF_WIN32_BOOL_FALSE(::SetMenuItemInfo(parent, id, FALSE, &mii));
 			return mii.fState == MFS_CHECKED ? true : false;
 		}

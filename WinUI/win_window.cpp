@@ -29,7 +29,7 @@ win_menu_command& win_window::menu_cmd(UINT cmd)
 	{
 		if (_cmd_type.count(cmd) == 0)
 			throw std::exception("Menu command requested does not exist");
-		return _cmd_type.at(cmd);
+		return *_cmd_type.at(cmd);
 	}
 	CATCH_RUNTIME_WITH_MSG;
 }
@@ -76,7 +76,7 @@ LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
 	case WM_COMMAND:
 	{
 		auto cmd_id = LOWORD(wp);
-		auto cmd = menu_cmd(cmd_id);
+		auto& cmd = menu_cmd(cmd_id);
 		switch (cmd.type())
 		{
 		case win::enum_menu_cmd_type::CHECKABLE:
@@ -107,10 +107,6 @@ LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
 	return 0;
 }
 
-void win_window::add_menu_cmd(UINT id, win_menu_command const& cmd)
-{
-	if(_cmd_type.count(id) == 0)
-		_cmd_type.insert(std::make_pair(id, cmd));
-}
+
 
 

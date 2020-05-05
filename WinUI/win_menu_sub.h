@@ -41,6 +41,6 @@ struct menu_cmd_struct
 	win_menu_sub* parent;
 };
 
-using menu_cmd_map = std::unordered_map<UINT, win_menu_command>;
+using menu_cmd_map = std::unordered_map<UINT, std::unique_ptr<win_menu_command>>;
 
 

@@ -20,6 +20,7 @@ public:
 	void title(std::wstring const& val) { win::set_window_text(item_handle(), val); }
 	[[nodiscard]] std::wstring title() { return win::get_window_text(item_handle()); }
 	[[nodiscard]] win_menu_command& menu_cmd(UINT cmd);
+	[[nodiscard]] menu_cmd_map& menu_cmds() { return _cmd_type; }
 
 	//EVENT SETTERS//
 	void set_on_close_window(on_close_window_type func);
@@ -39,7 +40,7 @@ private:
 	
 	//
 	
-	void add_menu_cmd(UINT id, win_menu_command const&);
+
 
 	//
 
