@@ -1,5 +1,6 @@
 #pragma once
-#include "win_window.h"
+
+class win_window;
 
 class win_menu_item
 {
@@ -35,10 +36,7 @@ public:
 	[[nodiscard]] HMENU handle() { return _handle.get(); }
 
 protected:
-	void set_menu()
-	{
-		win::set_menu(_my_window->item_handle(), _handle.get());
-	}
+	void set_menu();
 
 private:
 	win_window* _my_window{ nullptr };

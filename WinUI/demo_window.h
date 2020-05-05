@@ -15,6 +15,8 @@ public:
 private:
 	std::unique_ptr<win_menu_bar> _menu_bar{ nullptr };
 	bool on_close();
+	void on_menu_item_clicked(UINT item_id);
+	void on_menu_item_checked(UINT item_id, bool checked);
 
 	enum menu_id
 	{
@@ -23,7 +25,28 @@ private:
 		M_F_SAVE,
 		M_F_SAVE_AS,
 		M_F_RECENT,
-		M_F_EXIT
+		M_F_EXIT,
+		M_F_R_FIRST,
+		M_F_R_SECOND,
+		M_E_CUT,
+		M_E_COPY,
+		M_E_PASTE,
+		M_E_UNDO,
+		M_E_REDO,
+		M_E_FIND,
+		M_E_REPLACE,
+		M_E_CLONE,
+		M_E_DELETE,
+		M_V_T_FIRST,
+		M_V_T_SECOND,
+		M_V_T_THIRD,
+		M_V_T_FOURTH,
+		M_V_ENABLE,
+		M_V_DISABLE,
+		M_W_FIRST,
+		M_W_SECOND,
+		M_W_THIRD,
+		M_W_FOURTH
 	};
 };
 

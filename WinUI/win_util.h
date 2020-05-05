@@ -9,6 +9,7 @@ namespace win
 	using position = std::pair<left, top>;
 	using dimensions = std::pair<width, height>;
 
+	
 #ifndef CATCH_RUNTIME_WITH_MSG
 #define CATCH_RUNTIME_WITH_MSG catch(std::exception const& ex)		\
 	{																\
@@ -117,6 +118,15 @@ namespace win
 		VCENTER = BS_VCENTER
 	};
 
+	enum class enum_menu_cmd_type
+	{
+		ACTION,
+		CHECKABLE,
+		SELECTABLE
+	};
+
+	
+
 	static wil::unique_hwnd create_item(
 		HINSTANCE app
 		, HWND parent
@@ -223,7 +233,7 @@ namespace win
 		CATCH_RUNTIME_WITH_MSG;
 	}
 
-	void static set_menu(HWND window_handle, HMENU menu_handle)
+	static void set_menu(HWND window_handle, HMENU menu_handle)
 	{
 		try
 		{
@@ -232,7 +242,7 @@ namespace win
 		CATCH_RUNTIME_WITH_MSG
 	}
 
-	void static draw_menu_bar(HWND window_handle) 
+	static void draw_menu_bar(HWND window_handle)
 	{
 		try
 		{
@@ -241,12 +251,86 @@ namespace win
 		CATCH_RUNTIME_WITH_MSG
 	}
 
-	void static insert_menu_item(HMENU parent_handle, UINT id, bool by_position, MENUITEMINFO const& mii)
+	static void insert_menu_item(HMENU parent_handle, UINT id, bool by_position, MENUITEMINFO const& mii)
 	{
 		try
 		{
 			THROW_IF_WIN32_BOOL_FALSE(InsertMenuItem(parent_handle, id, FALSE, &mii));
 		}
-		CATCH_RUNTIME_WITH_MSG
+		CATCH_RUNTIME_WITH_MSG;
+	}
+
+	[[nodiscard]] static int get_menu_item_count(HMENU mnu)
+	{
+		try
+		{
+			auto count = ::GetMenuItemCount(mnu);
+			if (count == -1) THROW_LAST_ERROR();
+			return count;
+		}
+		CATCH_RUNTIME_WITH_MSG;
+	}
+	
+	static void destroy_window(HWND window)
+	{
+		try
+		{
+			THROW_IF_WIN32_BOOL_FALSE(::DestroyWindow(window));
+		}
+		CATCH_RUNTIME_WITH_MSG;
+	}
+
+	[[nodiscard]] static bool menu_item_checked(HMENU parent, UINT id)
+	{
+		try
+		{
+			MENUITEMINFO mii{};
+			mii.cbSize = sizeof(MENUITEMINFO);
+			mii.fMask = MIIM_STATE;
+			THROW_IF_WIN32_BOOL_FALSE(::GetMenuItemInfo(parent, id, FALSE, &mii));
+			return mii.fState == MFS_CHECKED ? true : false;
+		}
+		CATCH_RUNTIME_WITH_MSG;
+	}
+
+	[[nodiscard]] static bool do_menu_item_checked(HMENU parent, UINT id)
+	{
+		try
+		{
+			MENUITEMINFO mii{};
+			mii.cbSize = sizeof(MENUITEMINFO);
+			mii.fMask = MIIM_STATE;
+			THROW_IF_WIN32_BOOL_FALSE(::GetMenuItemInfo(parent, id, FALSE, &mii));
+			mii.fState = mii.fState == MFS_CHECKED ? MFS_UNCHECKED : MFS_CHECKED;
+			THROW_IF_WIN32_BOOL_FALSE(::SetMenuItemInfo(parent, id, FALSE, &mii));
+			return mii.fState == MFS_CHECKED ? true : false;
+		}
+		CATCH_RUNTIME_WITH_MSG;
+	}
+
+	static void menu_item_enable(HMENU parent, UINT id, bool enable = true)
+	{
+		try
+		{
+			MENUITEMINFO mii{};
+			mii.cbSize = sizeof(MENUITEMINFO);
+			mii.fMask = MIIM_STATE;
+			mii.fState = enable ? MFS_ENABLED : MFS_DISABLED;
+			THROW_IF_WIN32_BOOL_FALSE(::SetMenuItemInfo(parent, id, FALSE, &mii));
+		}
+		CATCH_RUNTIME_WITH_MSG;
+	}
+
+	[[nodiscard]] static bool menu_item_enabled(HMENU parent, UINT id)
+	{
+		try
+		{
+			MENUITEMINFO mii{};
+			mii.cbSize = sizeof(MENUITEMINFO);
+			mii.fMask = MIIM_STATE;
+			THROW_IF_WIN32_BOOL_FALSE(::SetMenuItemInfo(parent, id, FALSE, &mii));
+			return mii.fState == MFS_ENABLED ? true : false;
+		}
+		CATCH_RUNTIME_WITH_MSG;
 	}
 }
