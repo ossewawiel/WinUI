@@ -5,44 +5,41 @@
 
 win_menu_sub::win_menu_sub(NN(win_menu_item*) parent, UINT id, std::wstring const& name) :
 	win_menu_item{ parent->window(), win::create_popup_menu() },
-	_parent{ parent },
-	_window{ parent->window() },
-	_name{ name }
+	_parent{ parent }
 {
 	MENUITEMINFO mii{};
 	mii.cbSize = sizeof(MENUITEMINFO);
-	mii.fMask = MIIM_ID | MIIM_STRING | MIIM_DATA | MIIM_SUBMENU;
+	mii.fMask = MIIM_STRING | MIIM_DATA | MIIM_SUBMENU;
 	mii.fType = MFT_STRING;
-	mii.wID = id;
 	mii.dwTypeData = const_cast<LPWSTR>(name.c_str());
 	mii.hSubMenu = handle();
-	win::insert_menu_item(parent->handle(), id, FALSE, mii);
+	win::insert_menu_item(parent->handle(), id, TRUE, mii);
 }
 
 win_menu_sub::win_menu_sub(win_menu_sub&& rhs) noexcept:
 	win_menu_item{ std::move(rhs) },
-	_parent{ nullptr },
-	_name{}
+	_parent{ std::move(rhs._parent) },
+	_sub_menus{ std::move(rhs._sub_menus) }
 {
-	std::swap(_parent, rhs._parent);
-	_name = std::move(rhs._name);
+	rhs._parent = nullptr;
+	rhs._sub_menus.clear();
 }
 
 win_menu_sub& win_menu_sub::operator=(win_menu_sub&& rhs) noexcept
 {
 	if (this != &rhs)
 	{
-		_parent = nullptr;
-		_name.clear();
-		std::swap(_parent, rhs._parent);
-		_name = std::move(rhs._name);
+		_parent, std::move(rhs._parent);
+		_sub_menus = std::move(rhs._sub_menus);
+		rhs._parent = nullptr;
+		rhs._sub_menus.clear();
 	}
 	return *this;
 }
 
 void win_menu_sub::add_action(std::wstring const& text, UINT id, bool enabled)
 {
-	_parent->window()->menu_cmds().emplace(id, std::make_unique<win_menu_command>(win_menu_cmd_action{ this, text, id, enabled, _has_menu_break }));
+	window()->menu_cmds().emplace(id, win_menu_command::construct_action(this, id, text, enabled, _has_menu_break));
 	win::draw_menu_bar(window()->item_handle());
 	if (_has_menu_break) _has_menu_break = false;
 
@@ -50,7 +47,7 @@ void win_menu_sub::add_action(std::wstring const& text, UINT id, bool enabled)
 
 void win_menu_sub::add_checkable(std::wstring const& text, UINT id, bool checked)
 {
-	_parent->window()->menu_cmds().emplace(id, std::make_unique<win_menu_command>(win_menu_cmd_checkable{ this, text, id, checked, _has_menu_break }));
+	window()->menu_cmds().emplace(id, win_menu_command::construct_checkable(this, id, text, checked, true, _has_menu_break));
 	win::draw_menu_bar(window()->item_handle());
 	if (_has_menu_break) _has_menu_break = false;
 }

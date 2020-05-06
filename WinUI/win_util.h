@@ -255,7 +255,7 @@ namespace win
 	{
 		try
 		{
-			THROW_IF_WIN32_BOOL_FALSE(InsertMenuItem(parent_handle, id, FALSE, &mii));
+			THROW_IF_WIN32_BOOL_FALSE(InsertMenuItem(parent_handle, id, by_position, &mii));
 		}
 		CATCH_RUNTIME_WITH_MSG;
 	}

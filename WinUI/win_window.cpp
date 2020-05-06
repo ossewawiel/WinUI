@@ -29,7 +29,7 @@ win_menu_command& win_window::menu_cmd(UINT cmd)
 	{
 		if (_cmd_type.count(cmd) == 0)
 			throw std::exception("Menu command requested does not exist");
-		return *_cmd_type.at(cmd);
+		return _cmd_type.at(cmd);
 	}
 	CATCH_RUNTIME_WITH_MSG;
 }

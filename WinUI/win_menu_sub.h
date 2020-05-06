@@ -26,8 +26,6 @@ public:
 
 private:
 	win_menu_item*	_parent{ nullptr };
-	win_window* _window{ nullptr };
-	std::wstring	_name{};
 	std::vector<win_menu_sub> _sub_menus{};
 	bool _has_menu_break{ false };
 
@@ -41,6 +39,6 @@ struct menu_cmd_struct
 	win_menu_sub* parent;
 };
 
-using menu_cmd_map = std::unordered_map<UINT, std::unique_ptr<win_menu_command>>;
+using menu_cmd_map = std::unordered_map<UINT, win_menu_command>;
 
 

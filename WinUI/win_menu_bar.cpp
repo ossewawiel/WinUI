@@ -35,8 +35,9 @@ win_menu_sub& win_menu_bar::create_help_menu()
 
 win_menu_sub& win_menu_bar::create_sub_menu(std::wstring const& name, UINT id)
 {
-	_sub_menus.emplace_back(win_menu_sub{ this, id, name });
+	_sub_menus.emplace_back(win_menu_sub{ this, static_cast<UINT>(win::get_menu_item_count(handle())), name });
 	win::draw_menu_bar(window()->item_handle());
+
 	return _sub_menus.back();
-	
+
 }

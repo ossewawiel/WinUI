@@ -11,21 +11,21 @@ public:
 	{}
 
 	win_menu_item(win_menu_item&& rhs) noexcept :
-		_my_window{ nullptr },
-		_handle{ nullptr }
+		_my_window{ std::move(rhs._my_window) },
+		_handle{ std::move(rhs._handle) }
 	{
-		std::swap(_my_window, rhs._my_window);
-		std::swap(_handle, rhs._handle);
+		rhs._my_window = nullptr;
+		rhs._handle = nullptr;
 	}
 
 	win_menu_item& operator=(win_menu_item&& rhs) noexcept
 	{
 		if (this != &rhs)
 		{
-			_my_window = nullptr;
-			_handle.reset(nullptr);
-			std::swap(_my_window, rhs._my_window);
-			std::swap(_handle, rhs._handle);
+			_my_window = std::move(rhs._my_window);
+			_handle = std::move(rhs._handle);
+			rhs._my_window = nullptr;
+			rhs._handle = nullptr;
 		}
 		return *this;
 	}
