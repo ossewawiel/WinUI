@@ -3,36 +3,34 @@
 #include "win_menu_bar.h"
 #include "win_window.h"
 
-win_menu_sub::win_menu_sub(NN(win_menu_item*) parent, UINT id, std::wstring const& name) :
-	win_menu_item{ parent->window(), win::create_popup_menu() },
-	_parent{ parent }
+win_menu_sub::win_menu_sub(NN(win_window*) window, NN(HMENU) parent, UINT pos, UINT id, std::wstring const& name) :
+	win_menu_item{ window, win::create_popup_menu() }
 {
 	MENUITEMINFO mii{};
 	mii.cbSize = sizeof(MENUITEMINFO);
-	mii.fMask = MIIM_STRING | MIIM_DATA | MIIM_SUBMENU;
+	mii.fMask = MIIM_STRING | MIIM_SUBMENU | MIIM_ID;
 	mii.fType = MFT_STRING;
+	mii.wID = id;
 	mii.dwTypeData = const_cast<LPWSTR>(name.c_str());
 	mii.hSubMenu = handle();
-	win::insert_menu_item(parent->handle(), id, TRUE, mii);
+	win::insert_menu_item(parent, pos, TRUE, mii);
+}
+
+win_menu_sub::win_menu_sub(NN(win_window*) window):
+	win_menu_item{ window, win::create_popup_menu() }
+{
+	set_menu();
 }
 
 win_menu_sub::win_menu_sub(win_menu_sub&& rhs) noexcept:
-	win_menu_item{ std::move(rhs) },
-	_parent{ std::move(rhs._parent) },
-	_sub_menus{ std::move(rhs._sub_menus) }
-{
-	rhs._parent = nullptr;
-	rhs._sub_menus.clear();
-}
+	win_menu_item{ std::move(rhs) }
+{}
 
 win_menu_sub& win_menu_sub::operator=(win_menu_sub&& rhs) noexcept
 {
 	if (this != &rhs)
 	{
-		_parent, std::move(rhs._parent);
-		_sub_menus = std::move(rhs._sub_menus);
-		rhs._parent = nullptr;
-		rhs._sub_menus.clear();
+		*this = std::move(rhs);
 	}
 	return *this;
 }
@@ -68,12 +66,30 @@ void win_menu_sub::add_vertical_seperator()
 
 win_menu_sub& win_menu_sub::add_sub_menu(std::wstring const& text, bool enabled)
 {
-	_sub_menus.emplace_back(win_menu_sub{ this, static_cast<UINT>(win::get_menu_item_count(handle())), text });
-	win::draw_menu_bar(window()->item_handle());
-	
+	_sub_menus.emplace_back(win_menu_sub{ window(), handle(), static_cast<UINT>(win::get_menu_item_count(handle())), window()->sub_menu_id(), text });
 	return _sub_menus.back();
 }
 
-void win_menu_sub::add_selectable_group(std::initializer_list<std::pair<std::wstring, UINT>> items)
+void win_menu_sub::add_selectable_group(std::initializer_list<std::tuple<std::wstring, UINT, bool>> items)
 {
+	auto f_iter = items.begin();
+	UINT first_id = std::get<1>(*f_iter);
+	auto l_iter = std::next(f_iter, items.size() - 1);
+	UINT last_id = std::get<1>(*l_iter);
+
+	for (auto const& param : items)
+	{
+		window()->menu_cmds().emplace(std::get<1>(param), win_menu_command::construct_selectable(
+			this
+			, std::get<1>(param)
+			, std::get<0>(param)
+			, first_id
+			, last_id
+			, std::get<2>(param)
+			, true
+			, _has_menu_break)
+		);
+		if (_has_menu_break) _has_menu_break = false;
+	}
+	win::draw_menu_bar(window()->item_handle());
 }

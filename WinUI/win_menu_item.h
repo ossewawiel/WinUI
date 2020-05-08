@@ -30,7 +30,10 @@ public:
 		return *this;
 	}
 
-	virtual ~win_menu_item() = default;
+	virtual ~win_menu_item()
+	{
+
+	}
 
 	[[nodiscard]] win_window* window() { return _my_window; }
 	[[nodiscard]] HMENU handle() { return _handle.get(); }

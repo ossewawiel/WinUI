@@ -4,7 +4,7 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 {
 
 	_menu_bar = std::make_unique<win_menu_bar>(this);
-	auto& file = _menu_bar->create_file_menu();
+	auto& file = _menu_bar->add_file_menu();
 	file.add_action(L"&New", M_F_NEW);
 	file.add_action(L"&Open", M_F_OPEN);
 	file.add_seperator();
@@ -18,7 +18,7 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	recent.add_action(L"First", M_F_R_FIRST);
 	recent.add_action(L"Second", M_F_R_SECOND);
 
-	auto& edit = _menu_bar->create_edit_menu();
+	auto& edit = _menu_bar->add_edit_menu();
 	edit.add_action(L"C&ut", M_E_CUT);
 	edit.add_action(L"&Copy", M_E_COPY);
 	edit.add_action(L"&Paste", M_E_PASTE);
@@ -32,7 +32,7 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	edit.add_action(L"&Clone", M_E_CLONE);
 	edit.add_action(L"&Delete", M_E_DELETE);
 
-	auto& view = _menu_bar->create_view_menu();
+	auto& view = _menu_bar->add_view_menu();
 	auto& toolbars = view.add_sub_menu(L"Toolbars");
 	toolbars.add_checkable(L"First Checkable", M_V_T_FIRST);
 	toolbars.add_checkable(L"Second Checkable", M_V_T_SECOND);
@@ -42,18 +42,19 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	view.add_action(L"&Enable", M_V_ENABLE, false);
 	view.add_action(L"&Disable", M_V_DISABLE);
 
-	auto& window = _menu_bar->create_window_menu();
+	auto& window = _menu_bar->add_window_menu();
 	window.add_selectable_group({
-		{ L"First Selectable", M_W_FIRST },
-		{ L"Second Selectable", M_W_SECOND },
-		{ L"Third Selectable", M_W_THIRD },
-		{ L"Fourth Selectable", M_W_FOURTH }
-		});
+		{ L"First Selectable", M_W_FIRST, true },
+		{ L"Second Selectable", M_W_SECOND, false },
+		{ L"Third Selectable", M_W_THIRD, false },
+		{ L"Fourth Selectable", M_W_FOURTH, false }
+	});
 
 
 	set_on_close_window(std::bind(&demo_window::on_close, this));
 	set_on_menu_item_clicked(std::bind(&demo_window::on_menu_item_clicked, this, std::placeholders::_1));
 	set_on_menu_item_checked(std::bind(&demo_window::on_menu_item_checked, this, std::placeholders::_1, std::placeholders::_2));
+	set_on_menu_item_selected(std::bind(&demo_window::on_menu_item_selected, this, std::placeholders::_1));
 }
 
 bool demo_window::on_close()
@@ -71,7 +72,7 @@ void demo_window::on_menu_item_clicked(UINT item_id)
 	case M_F_SAVE_AS:
 	case M_F_R_FIRST:
 	case M_F_R_SECOND:
-		info_msg(L"Menu Item clicked", std::to_wstring(item_id));
+		info_msg(L"Menu Item clicked", menu_cmd(item_id).text());
 		break;
 	case M_V_DISABLE:
 		menu_cmd(M_V_DISABLE).enabled(false);
@@ -104,4 +105,9 @@ void demo_window::on_menu_item_checked(UINT item_id, bool checked)
 		break;
 	default: return;
 	}
+}
+
+void demo_window::on_menu_item_selected(UINT item_id)
+{
+	info_msg(L"Menu Item selected", menu_cmd(item_id).text());
 }

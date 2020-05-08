@@ -49,6 +49,11 @@ void win_window::set_on_menu_item_checked(on_menu_item_checked func)
 	_on_menu_item_checked = func;
 }
 
+void win_window::set_on_menu_item_selected(on_menu_item_selected func)
+{
+	_on_menu_item_selected = func;
+}
+
 //METHODS//
 
 void win_window::close() 
@@ -58,7 +63,9 @@ void win_window::close()
 		do_close = _on_close_window();
 
 	if (do_close)
+	{
 		win::destroy_window(item_handle());
+	}
 }
 
 LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
@@ -73,6 +80,9 @@ LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
 		EndPaint(item_handle(), &ps);
 	}
 	break;
+	case WM_INITMENUPOPUP:
+	{}
+	break;
 	case WM_COMMAND:
 	{
 		auto cmd_id = LOWORD(wp);
@@ -80,14 +90,24 @@ LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
 		switch (cmd.type())
 		{
 		case win::enum_menu_cmd_type::CHECKABLE:
+		{
+			auto checked = win::do_menu_item_checked(cmd.parent(), cmd_id);
 			if (_on_menu_item_checked)
 			{
-				_on_menu_item_checked(cmd_id, win::do_menu_item_checked(cmd.parent()->handle(), cmd_id));
+				_on_menu_item_checked(cmd_id, checked);
 			}
-			break;
+		}
+		break;
 		case win::enum_menu_cmd_type::ACTION:
 			if (_on_menu_item_clicked)
 				_on_menu_item_clicked(cmd_id);
+			break;
+		case win::enum_menu_cmd_type::SELECTABLE:
+			win::do_menu_item_selected(cmd.parent(), cmd_id, cmd.first_selectable(), cmd.last_selectable());
+			if (_on_menu_item_selected)
+			{
+				_on_menu_item_selected(cmd_id);
+			}
 			break;
 		default:
 			break;

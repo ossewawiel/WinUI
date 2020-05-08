@@ -17,13 +17,17 @@ public:
 
 	[[nodiscard]] UINT id() const noexcept { return _id; }
 	[[nodiscard]] win::enum_menu_cmd_type	type() const noexcept { return _type; }
-	[[nodiscard]] win_menu_item* parent() noexcept { return _parent; }
+	[[nodiscard]] HMENU parent() noexcept { return _parent; }
 	[[nodiscard]] bool	enabled();
 	void	enabled(bool val);
 	[[nodiscard]] bool	checked();
 	void	checked(bool val);
 	[[nodiscard]] bool	selected();
 	void	selected(bool val);
+	[[nodiscard]] std::wstring	text();
+	void	text(std::wstring val);
+	[[nodiscard]] UINT first_selectable();
+	[[nodiscard]] UINT last_selectable();
 
 	//STATICS//
 	[[nodiscard]] static win_menu_command construct_action(
@@ -56,14 +60,14 @@ protected:
 
 private:
 	win_menu_command(
-		NN(win_menu_item*) parent
+		NN(HMENU) parent
 		, UINT id
 		, MENUITEMINFO const& mii
 		, UINT first_id = 0
 		, UINT last_id = 0
 		, win::enum_menu_cmd_type type = win::enum_menu_cmd_type::ACTION);
 
-	win_menu_item*	_parent{ nullptr };
+	HMENU	_parent{ nullptr };
 	UINT			_id{ 0 };
 	win::enum_menu_cmd_type _type{ win::enum_menu_cmd_type::ACTION };
 	UINT _first_selectable{ 0 };

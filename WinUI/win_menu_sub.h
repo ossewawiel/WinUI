@@ -10,27 +10,24 @@ class win_menu_sub :
 	public win_menu_item
 {
 public:
-	win_menu_sub(NN(win_menu_item*) parent, UINT pos, std::wstring const& name);
+	win_menu_sub(NN(win_window*) window, NN(HMENU) parent, UINT pos, UINT id, std::wstring const& name);
+	win_menu_sub(NN(win_window*) window);
 	win_menu_sub(win_menu_sub&&) noexcept;
 
 	win_menu_sub& operator=(win_menu_sub&&) noexcept;
 
-	win_menu_cmd_map& menu_commands() { return _menu_commands; }
+	//win_menu_cmd_map& menu_commands() { return _menu_commands; }
 
 	void add_action(std::wstring const& text, UINT id, bool enabled = true);
 	void add_checkable(std::wstring const& text, UINT id, bool checked = false);
 	void add_seperator();
 	void add_vertical_seperator();
 	win_menu_sub& add_sub_menu(std::wstring const& text, bool enabled = true);
-	void add_selectable_group(std::initializer_list<std::pair<std::wstring, UINT>> items);
+	void add_selectable_group(std::initializer_list<std::tuple<std::wstring, UINT, bool>> items);
 
 private:
-	win_menu_item*	_parent{ nullptr };
-	std::vector<win_menu_sub> _sub_menus{};
 	bool _has_menu_break{ false };
-
-	win_menu_cmd_map _menu_commands{};
-
+	std::vector<win_menu_sub> _sub_menus{};
 };
 
 struct menu_cmd_struct

@@ -4,7 +4,7 @@
 
 
 win_menu_command::win_menu_command(
-		NN(win_menu_item*) parent
+		NN(HMENU) parent
 		, UINT id
 		, MENUITEMINFO const& mii
 		, UINT first_id
@@ -16,7 +16,7 @@ win_menu_command::win_menu_command(
 	_first_selectable{ first_id },
 	_last_selectable{ last_id }
 {
-	win::insert_menu_item(parent->handle(), id, FALSE, mii);
+	win::insert_menu_item(parent, id, FALSE, mii);
 }
 
 
@@ -49,13 +49,13 @@ win_menu_command& win_menu_command::operator=(win_menu_command&& rhs)
 
 bool win_menu_command::enabled() 
 { 
-	return win::menu_item_enabled(_parent->handle(), _id); 
+	return win::menu_item_enabled(_parent, _id); 
 }
 
 
 void win_menu_command::enabled(bool val) 
 { 
-	win::menu_item_enable(_parent->handle(), _id, val); 
+	win::menu_item_enable(_parent, _id, val); 
 }
 
 
@@ -70,7 +70,7 @@ win_menu_command win_menu_command::construct_action(NN(win_menu_item*) parent, U
 	mii.fState = enabled ? MFS_ENABLED : MFS_GRAYED;
 	mii.dwTypeData = const_cast<LPWSTR>(text.c_str());
 
-	return win_menu_command{parent, id, mii};
+	return win_menu_command{parent->handle(), id, mii};
 }
 
 
@@ -85,7 +85,7 @@ win_menu_command win_menu_command::construct_checkable(NN(win_menu_item*) parent
 	mii.fState = checked ? MFS_CHECKED : MFS_UNCHECKED;
 	mii.dwTypeData = const_cast<LPWSTR>(text.c_str());
 	
-	return win_menu_command{ parent, id, mii, 0, 0, win::enum_menu_cmd_type::CHECKABLE };
+	return win_menu_command{ parent->handle(), id, mii, 0, 0, win::enum_menu_cmd_type::CHECKABLE };
 }
 
 
@@ -100,5 +100,24 @@ win_menu_command win_menu_command::construct_selectable(NN(win_menu_item*) paren
 	mii.fState = selected ? MFS_CHECKED : MFS_UNCHECKED;
 	mii.dwTypeData = const_cast<LPWSTR>(text.c_str());
 
-	return win_menu_command{ parent, id, mii, first_id, last_id, win::enum_menu_cmd_type::SELECTABLE };
+	return win_menu_command{ parent->handle(), id, mii, first_id, last_id, win::enum_menu_cmd_type::SELECTABLE };
+}
+
+std::wstring win_menu_command::text()
+{
+	return win::menu_item_text(_parent, _id);
+}
+
+void win_menu_command::text(std::wstring val)
+{
+}
+
+UINT win_menu_command::first_selectable()
+{
+	return _first_selectable;
+}
+
+UINT win_menu_command::last_selectable()
+{
+	return _last_selectable;
 }

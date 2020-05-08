@@ -17,10 +17,11 @@ private:
 	bool on_close();
 	void on_menu_item_clicked(UINT item_id);
 	void on_menu_item_checked(UINT item_id, bool checked);
+	void on_menu_item_selected(UINT item_id);
 
 	enum menu_id
 	{
-		M_F_NEW,
+		M_F_NEW = 1,
 		M_F_OPEN,
 		M_F_SAVE,
 		M_F_SAVE_AS,

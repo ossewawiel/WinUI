@@ -255,7 +255,7 @@ namespace win
 	{
 		try
 		{
-			THROW_IF_WIN32_BOOL_FALSE(InsertMenuItem(parent_handle, id, by_position, &mii));
+			THROW_IF_WIN32_BOOL_FALSE(::InsertMenuItem(parent_handle, id, by_position ? TRUE : FALSE, &mii));
 		}
 		CATCH_RUNTIME_WITH_MSG;
 	}
@@ -330,6 +330,33 @@ namespace win
 			mii.fMask = MIIM_STATE;
 			THROW_IF_WIN32_BOOL_FALSE(::SetMenuItemInfo(parent, id, FALSE, &mii));
 			return mii.fState == MFS_ENABLED ? true : false;
+		}
+		CATCH_RUNTIME_WITH_MSG;
+	}
+
+	[[nodiscard]] static std::wstring menu_item_text(HMENU parent, UINT id)
+	{
+		try
+		{
+			MENUITEMINFO mii{};
+			mii.cbSize = sizeof(MENUITEMINFO);
+			mii.fMask = MIIM_STRING;
+			mii.dwTypeData = nullptr;
+			THROW_IF_WIN32_BOOL_FALSE(::GetMenuItemInfo(parent, id, FALSE, &mii));
+			std::vector<wchar_t> buf(mii.cch + 1);
+			mii.dwTypeData = buf.data();
+			mii.cch += 1;
+			THROW_IF_WIN32_BOOL_FALSE(::GetMenuItemInfo(parent, id, FALSE, &mii));
+			return std::wstring{ &buf[0] };
+		}
+		CATCH_RUNTIME_WITH_MSG;
+	}
+
+	static void do_menu_item_selected(HMENU parent, UINT id, UINT first_id, UINT last_id)
+	{
+		try
+		{
+			THROW_IF_WIN32_BOOL_FALSE(::CheckMenuRadioItem(parent, first_id, last_id, id, MF_BYCOMMAND));
 		}
 		CATCH_RUNTIME_WITH_MSG;
 	}
