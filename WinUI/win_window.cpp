@@ -3,9 +3,10 @@
 #include "win_window.h"
 #include "win_menu_sub.h"
 
-win_window::win_window(gsl::not_null<win_app*> app, std::wstring title) :
+win_window::win_window(gsl::not_null<win_app*> app, std::wstring title, theme the_theme) :
 	win_item{app},
-	_app{ app }
+	_app{ app },
+	_theme{ the_theme }
 {
 	try
 	{
@@ -54,6 +55,11 @@ void win_window::set_on_menu_item_selected(on_menu_item_selected func)
 	_on_menu_item_selected = func;
 }
 
+void win_window::set_on_right_mouse_down(on_right_mouse_down func)
+{
+	_on_right_mouse_down = func;
+}
+
 //METHODS//
 
 void win_window::close() 
@@ -72,12 +78,38 @@ LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
 {
 	switch (msg)
 	{
+	case WM_RBUTTONDOWN:
+	{
+		if (_on_right_mouse_down)
+		{
+			if (win::clicked_in_current_rectangle(item_handle(), lp))
+			{
+				_on_right_mouse_down(
+					static_cast<win::enum_virtual_button>(wp)
+					, win::get_position(lp)
+				);
+			}
+		}
+	}
+	break;
+	/*case WM_ERASEBKGND:
+	{
+		auto hdc = (HDC)wp;
+		RECT rc{};
+		
+		GetClientRect(item_handle(), &rc);
+		SetMapMode(hdc, MM_ANISOTROPIC);
+		SetWindowExtEx(hdc, 100, 100, NULL);
+		SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
+		FillRect(hdc, &rc, bg);
+	}
+		return 1L;*/
 	case WM_PAINT:
 	{
 		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(item_handle(), &ps);
-		// TODO: Add any drawing code that uses hdc here...
-		EndPaint(item_handle(), &ps);
+		HDC hdc = ::BeginPaint(item_handle(), &ps);
+		FillRect(hdc, &ps.rcPaint, _theme.clr_window_bkg);
+		::EndPaint(item_handle(), &ps);
 	}
 	break;
 	case WM_INITMENUPOPUP:
@@ -118,7 +150,7 @@ LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
 		close();
 		break;
 	case WM_DESTROY:
-		PostQuitMessage(0);
+		::PostQuitMessage(0);
 		break;
 	default:
 		return DefWindowProc(item_handle(), msg, wp, lp);

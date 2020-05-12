@@ -1,3 +1,4 @@
+#include "resource.h"
 #include "demo_window.h"
 
 demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win_window{ app, title }
@@ -9,52 +10,60 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	file.add_action(L"&Open", M_F_OPEN);
 	file.add_seperator();
 	file.add_action(L"&Save", M_F_SAVE);
-	file.add_action(L"&Save as...", M_F_SAVE_AS);
+	file.add_action(L"S&ave as...", M_F_SAVE_AS);
 	file.add_seperator();
 	auto& recent = file.add_sub_menu(L"&Recent");
 	file.add_seperator();
-	file.add_action(L"&Exit", M_F_EXIT);
+	file.add_action(L"Exit\tAlt+F4", M_F_EXIT);
+	file.default_item(M_F_OPEN);
 
 	recent.add_action(L"First", M_F_R_FIRST);
 	recent.add_action(L"Second", M_F_R_SECOND);
 
 	auto& edit = _menu_bar->add_edit_menu();
-	edit.add_action(L"C&ut", M_E_CUT);
-	edit.add_action(L"&Copy", M_E_COPY);
-	edit.add_action(L"&Paste", M_E_PASTE);
+	edit.add_action(L"Cut\tCtrl+X", M_E_CUT, IDB_CUT16, true);
+	edit.add_action(L"Copy\tCtrl+C", M_E_COPY);
+	edit.add_action(L"Paste\tCtrl+V", M_E_PASTE);
 	edit.add_vertical_seperator();
-	edit.add_action(L"&Undo", M_E_UNDO);
-	edit.add_action(L"&Redo", M_E_REDO);
+	edit.add_action(L"Undo", M_E_UNDO);
+	edit.add_action(L"Redo", M_E_REDO);
 	edit.add_vertical_seperator();
 	edit.add_action(L"&Find", M_E_FIND);
-	edit.add_action(L"&Replace", M_E_REPLACE);
+	edit.add_action(L"Re&place", M_E_REPLACE);
 	edit.add_vertical_seperator();
-	edit.add_action(L"&Clone", M_E_CLONE);
+	edit.add_action(L"C&lone", M_E_CLONE);
 	edit.add_action(L"&Delete", M_E_DELETE);
 
 	auto& view = _menu_bar->add_view_menu();
 	auto& toolbars = view.add_sub_menu(L"Toolbars");
-	toolbars.add_checkable(L"First Checkable", M_V_T_FIRST);
-	toolbars.add_checkable(L"Second Checkable", M_V_T_SECOND);
-	toolbars.add_checkable(L"Third Checkable", M_V_T_THIRD);
-	toolbars.add_checkable(L"Fourth Checkable", M_V_T_FOURTH);
+	toolbars.add_checkable(L"First Checkable", M_V_T_FIRST, IDB_CHECK16);
+	toolbars.add_checkable(L"Second Checkable", M_V_T_SECOND, IDB_CHECK16);
+	toolbars.add_checkable(L"Third Checkable", M_V_T_THIRD, IDB_CHECK16);
+	toolbars.add_checkable(L"Fourth Checkable", M_V_T_FOURTH, IDB_CHECK16);
 	view.add_seperator();
 	view.add_action(L"&Enable", M_V_ENABLE, false);
 	view.add_action(L"&Disable", M_V_DISABLE);
 
 	auto& window = _menu_bar->add_window_menu();
-	window.add_selectable_group({
-		{ L"First Selectable", M_W_FIRST, true },
-		{ L"Second Selectable", M_W_SECOND, false },
-		{ L"Third Selectable", M_W_THIRD, false },
-		{ L"Fourth Selectable", M_W_FOURTH, false }
+	window.add_selectable_group(M_W_SECOND, {
+		{ L"First Selectable", M_W_FIRST },
+		{ L"Second Selectable", M_W_SECOND },
+		{ L"Third Selectable", M_W_THIRD },
+		{ L"Fourth Selectable", M_W_FOURTH }
 	});
 
+	_popup_mnu = std::make_unique<win_menu_sub>(this);
+	_popup_mnu->add_action(L"Pop1", M_P_POP1);
+	_popup_mnu->add_action(L"Pop2", M_P_POP2);
+	_popup_mnu->add_seperator();
+	_popup_mnu->add_action(L"Pop3", M_P_POP3);
+	_popup_mnu->add_action(L"Pop4", M_P_POP4);
 
 	set_on_close_window(std::bind(&demo_window::on_close, this));
 	set_on_menu_item_clicked(std::bind(&demo_window::on_menu_item_clicked, this, std::placeholders::_1));
 	set_on_menu_item_checked(std::bind(&demo_window::on_menu_item_checked, this, std::placeholders::_1, std::placeholders::_2));
 	set_on_menu_item_selected(std::bind(&demo_window::on_menu_item_selected, this, std::placeholders::_1));
+	set_on_right_mouse_down(std::bind(&demo_window::on_right_mouse_down, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 bool demo_window::on_close()
@@ -111,3 +120,10 @@ void demo_window::on_menu_item_selected(UINT item_id)
 {
 	info_msg(L"Menu Item selected", menu_cmd(item_id).text());
 }
+
+void demo_window::on_right_mouse_down(win::enum_virtual_button v_btn, win::position pos)
+{
+	_popup_mnu->show(pos);
+};
+
+

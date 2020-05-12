@@ -5,7 +5,14 @@
 win_menu_bar::win_menu_bar(NN(win_window*) window) :
 	win_menu_item{ window, win::create_menu() }
 {
+	MENUINFO mi{};
+	mi.cbSize = sizeof(MENUINFO);
+	mi.fMask = MIM_BACKGROUND;
+	mi.hbrBack = window->_theme.clr_menubar_bkg;
+	mi.dwStyle = MNS_AUTODISMISS;
+	THROW_IF_WIN32_BOOL_FALSE(::SetMenuInfo(handle(), &mi));
 	set_menu();
+	win::draw_menu_bar(window->item_handle());
 }
 
 win_menu_sub& win_menu_bar::add_file_menu()

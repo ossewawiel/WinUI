@@ -16,14 +16,20 @@ public:
 
 	win_menu_sub& operator=(win_menu_sub&&) noexcept;
 
-	//win_menu_cmd_map& menu_commands() { return _menu_commands; }
+	//PROPERTIES//
+	void default_item(UINT id);
 
+	//METHODS//
+	void show(win::position pos);
+
+	//ITEM CREATION//
 	void add_action(std::wstring const& text, UINT id, bool enabled = true);
-	void add_checkable(std::wstring const& text, UINT id, bool checked = false);
+	void add_action(std::wstring const& text, UINT id, UINT icon_id, bool enabled = true);
+	void add_checkable(std::wstring const& text, UINT id, UINT bitmap_id = 0, bool checked = false);
 	void add_seperator();
 	void add_vertical_seperator();
 	win_menu_sub& add_sub_menu(std::wstring const& text, bool enabled = true);
-	void add_selectable_group(std::initializer_list<std::tuple<std::wstring, UINT, bool>> items);
+	void add_selectable_group(UINT selected, std::initializer_list<std::pair<std::wstring, UINT>> items);
 
 private:
 	bool _has_menu_break{ false };

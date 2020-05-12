@@ -19,11 +19,18 @@ win_menu_sub::win_menu_sub(NN(win_window*) window, NN(HMENU) parent, UINT pos, U
 win_menu_sub::win_menu_sub(NN(win_window*) window):
 	win_menu_item{ window, win::create_popup_menu() }
 {
-	set_menu();
+	MENUINFO mi{ 0 };
+	mi.cbSize = sizeof(MENUINFO);
+	mi.fMask = MIM_APPLYTOSUBMENUS | MIM_BACKGROUND | MIM_STYLE;
+	mi.dwStyle = MNS_AUTODISMISS | MNS_CHECKORBMP| MNS_NOTIFYBYPOS;
+	mi.hbrBack = window->_theme.clr_menubar_bkg;
+	THROW_IF_WIN32_BOOL_FALSE(::SetMenuInfo(handle(), &mi));
 }
 
 win_menu_sub::win_menu_sub(win_menu_sub&& rhs) noexcept:
-	win_menu_item{ std::move(rhs) }
+	win_menu_item{ std::move(rhs) },
+	_has_menu_break{std::move(rhs._has_menu_break)},
+	_sub_menus{ std::move(rhs._sub_menus) }
 {}
 
 win_menu_sub& win_menu_sub::operator=(win_menu_sub&& rhs) noexcept
@@ -35,17 +42,34 @@ win_menu_sub& win_menu_sub::operator=(win_menu_sub&& rhs) noexcept
 	return *this;
 }
 
-void win_menu_sub::add_action(std::wstring const& text, UINT id, bool enabled)
+void win_menu_sub::default_item(UINT id)
 {
-	window()->menu_cmds().emplace(id, win_menu_command::construct_action(this, id, text, enabled, _has_menu_break));
-	win::draw_menu_bar(window()->item_handle());
-	if (_has_menu_break) _has_menu_break = false;
-
+	win::default_item(handle(), id);
 }
 
-void win_menu_sub::add_checkable(std::wstring const& text, UINT id, bool checked)
+void win_menu_sub::show(win::position pos)
 {
-	window()->menu_cmds().emplace(id, win_menu_command::construct_checkable(this, id, text, checked, true, _has_menu_break));
+	::ClientToScreen(window()->item_handle(), (LPPOINT)&pos);
+	::TrackPopupMenu(handle(),
+		TPM_LEFTALIGN | TPM_RIGHTBUTTON | TPM_RIGHTBUTTON,
+		pos.left, pos.top, 0, window()->item_handle(), NULL);
+}
+
+void win_menu_sub::add_action(std::wstring const& text, UINT id, bool enabled)
+{
+	add_action(text, id, 0, enabled);
+}
+
+void win_menu_sub::add_action(std::wstring const& text, UINT id, UINT icon_id, bool enabled)
+{
+	window()->menu_cmds().emplace(id, win_menu_command::construct_action(this, id, text, icon_id, enabled, _has_menu_break));
+	win::draw_menu_bar(window()->item_handle());
+	if (_has_menu_break) _has_menu_break = false;
+}
+
+void win_menu_sub::add_checkable(std::wstring const& text, UINT id, UINT bitmap_id, bool checked)
+{
+	window()->menu_cmds().emplace(id, win_menu_command::construct_checkable(this, id, text, bitmap_id, checked, true, _has_menu_break));
 	win::draw_menu_bar(window()->item_handle());
 	if (_has_menu_break) _has_menu_break = false;
 }
@@ -70,22 +94,25 @@ win_menu_sub& win_menu_sub::add_sub_menu(std::wstring const& text, bool enabled)
 	return _sub_menus.back();
 }
 
-void win_menu_sub::add_selectable_group(std::initializer_list<std::tuple<std::wstring, UINT, bool>> items)
+void win_menu_sub::add_selectable_group(UINT selected, std::initializer_list<std::pair<std::wstring, UINT>> items)
 {
+	if (items.size() == 0)
+		return;
+
 	auto f_iter = items.begin();
-	UINT first_id = std::get<1>(*f_iter);
+	UINT first_id = f_iter->second;
 	auto l_iter = std::next(f_iter, items.size() - 1);
-	UINT last_id = std::get<1>(*l_iter);
+	UINT last_id = l_iter->second;
 
 	for (auto const& param : items)
 	{
 		window()->menu_cmds().emplace(std::get<1>(param), win_menu_command::construct_selectable(
 			this
-			, std::get<1>(param)
-			, std::get<0>(param)
+			, param.second
+			, param.first
 			, first_id
 			, last_id
-			, std::get<2>(param)
+			, selected == param.second
 			, true
 			, _has_menu_break)
 		);

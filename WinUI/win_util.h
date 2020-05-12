@@ -6,9 +6,10 @@ namespace win
 	using width = int;
 	using top = int;
 	using height = int;
-	using position = std::pair<left, top>;
+	//using position = std::pair<left, top>;
 	using dimensions = std::pair<width, height>;
 
+	struct position { long left; long top; };
 	
 #ifndef CATCH_RUNTIME_WITH_MSG
 #define CATCH_RUNTIME_WITH_MSG catch(std::exception const& ex)		\
@@ -118,6 +119,18 @@ namespace win
 		VCENTER = BS_VCENTER
 	};
 
+	enum class enum_virtual_button
+	{
+		NONE = 0x0000,
+		CTRL = 0x0008,
+		LEFT_MOUSE = 0x0001,
+		CENTER_MOUSE = 0x0010,
+		RIGHT_MOUSE = 0x0002,
+		SHIFT = 0x0004,
+		MOUSE_BTN1 = 0x0020,
+		MOUSE_BTN2 = 0x0040
+	};
+
 	enum class enum_menu_cmd_type
 	{
 		ACTION,
@@ -140,13 +153,13 @@ namespace win
 	{
 		try
 		{
-			HWND hWnd = CreateWindowEx(
+			HWND hWnd = ::CreateWindowEx(
 				static_cast<DWORD>(ex_style)
 				, class_name.c_str()
 				, window_name.c_str()
 				, static_cast<DWORD>(style)
-				, pos.first
-				, pos.second
+				, pos.left
+				, pos.top
 				, dim.first
 				, dim.second
 				, parent
@@ -158,7 +171,9 @@ namespace win
 
 			return wil::unique_hwnd(hWnd);
 		}
-		CATCH_RUNTIME_WITH_MSG
+		CATCH_RUNTIME_WITH_MSG;
+
+		return nullptr;
 	}
 
 	[[nodiscard]] static int get_window_text_length(HWND handle)
@@ -209,6 +224,8 @@ namespace win
 			return val;
 		}
 		CATCH_RUNTIME_WITH_MSG;
+
+		return nullptr;
 	}
 
 	[[nodiscard]] static HMENU create_popup_menu()
@@ -222,6 +239,8 @@ namespace win
 			return val;
 		}
 		CATCH_RUNTIME_WITH_MSG;
+
+		return nullptr;
 	}
 
 	static void append_menu(HMENU parent_handle, HMENU menu_handle, UINT options, std::wstring const& name)
@@ -269,6 +288,8 @@ namespace win
 			return count;
 		}
 		CATCH_RUNTIME_WITH_MSG;
+
+		return 0;
 	}
 	
 	static void destroy_window(HWND window)
@@ -291,6 +312,21 @@ namespace win
 			return mii.fState == MFS_CHECKED ? true : false;
 		}
 		CATCH_RUNTIME_WITH_MSG;
+
+		return false;
+	}
+
+	static void menu_item_checked(HMENU parent, UINT id, bool checked)
+	{
+		try
+		{
+			MENUITEMINFO mii{};
+			mii.cbSize = sizeof(MENUITEMINFO);
+			mii.fMask = MIIM_STATE;
+			mii.fState = checked ? MFS_CHECKED : MFS_UNCHECKED;
+			THROW_IF_WIN32_BOOL_FALSE(::SetMenuItemInfo(parent, id, FALSE, &mii));
+		}
+		CATCH_RUNTIME_WITH_MSG;
 	}
 
 	[[nodiscard]] static bool do_menu_item_checked(HMENU parent, UINT id)
@@ -306,6 +342,8 @@ namespace win
 			return mii.fState == MFS_CHECKED ? true : false;
 		}
 		CATCH_RUNTIME_WITH_MSG;
+
+		return false;
 	}
 
 	static void menu_item_enable(HMENU parent, UINT id, bool enable = true)
@@ -332,6 +370,8 @@ namespace win
 			return mii.fState == MFS_ENABLED ? true : false;
 		}
 		CATCH_RUNTIME_WITH_MSG;
+
+		return false;
 	}
 
 	[[nodiscard]] static std::wstring menu_item_text(HMENU parent, UINT id)
@@ -350,6 +390,8 @@ namespace win
 			return std::wstring{ &buf[0] };
 		}
 		CATCH_RUNTIME_WITH_MSG;
+
+		return std::wstring{};
 	}
 
 	static void do_menu_item_selected(HMENU parent, UINT id, UINT first_id, UINT last_id)
@@ -359,5 +401,56 @@ namespace win
 			THROW_IF_WIN32_BOOL_FALSE(::CheckMenuRadioItem(parent, first_id, last_id, id, MF_BYCOMMAND));
 		}
 		CATCH_RUNTIME_WITH_MSG;
+	}
+
+	static void default_item(HMENU parent, UINT id)
+	{
+		try
+		{
+			THROW_IF_WIN32_BOOL_FALSE(::SetMenuDefaultItem(parent, id, FALSE));
+		}
+		CATCH_RUNTIME_WITH_MSG;
+	}
+
+	[[nodiscard]] static ::RECT get_client_rectangle(HWND handle)
+	{
+		try
+		{
+			RECT rc{};
+			THROW_IF_WIN32_BOOL_FALSE(::GetClientRect(handle, &rc));
+			return rc;
+		}
+		CATCH_RUNTIME_WITH_MSG;
+	}
+
+	[[nodiscard]] static bool point_in_rectangle(RECT const& rc, POINT const& pt)
+	{
+			return ::PtInRect(&rc, pt) != 0;
+	}
+
+	[[nodiscard]] static bool clicked_in_current_rectangle(HWND handle, LPARAM lp)
+	{
+		try
+		{
+			auto rc = get_client_rectangle(handle);
+			POINT pnt{ GET_X_LPARAM(lp), GET_Y_LPARAM(lp) };
+			return point_in_rectangle(rc,pnt);
+		}
+		CATCH_RUNTIME_WITH_MSG;
+	}
+
+	[[nodiscard]] static ::POINT get_point(LPARAM lp)
+	{
+		return ::POINT { GET_X_LPARAM(lp), GET_Y_LPARAM(lp) };
+	}
+
+	[[nodiscard]] static position get_position(LPARAM lp)
+	{
+		return position{ GET_X_LPARAM(lp), GET_Y_LPARAM(lp) };
+	}
+
+	[[nodiscard]] static position get_position(::POINT const& pt)
+	{
+		return position{ pt.x, pt.y };
 	}
 }

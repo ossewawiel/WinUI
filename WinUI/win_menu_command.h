@@ -34,6 +34,7 @@ public:
 		NN(win_menu_item*)
 		, UINT id
 		, std::wstring const& text
+		, UINT bitmap_id
 		, bool enabled = true
 		, bool v_seperator = false);
 
@@ -41,6 +42,7 @@ public:
 		NN(win_menu_item*)
 		, UINT id
 		, std::wstring const& text
+		, UINT bitmap_id = 0
 		, bool checked = false
 		, bool enabled = true
 		, bool v_seperator = false);

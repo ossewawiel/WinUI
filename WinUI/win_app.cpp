@@ -1,6 +1,6 @@
 #include "win_item.h"
 #include "win_app.h"
-
+#include "Resource.h"
 wil::unique_hmodule win_app::_instance = nullptr;
 wil::unique_hmodule win_app::_prev_instance = nullptr;
 std::wstring win_app::_cmd_line = L"";
@@ -84,12 +84,12 @@ WNDCLASSEX win_app::win_class(std::wstring const& name) noexcept
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = _instance.get();
-    wcex.hIcon = nullptr;
+    wcex.hIcon = LoadIcon(nullptr, MAKEINTRESOURCE(IDI_APP));;
     wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground = nullptr;
     wcex.lpszMenuName = nullptr;
     wcex.lpszClassName = name.c_str();
-    wcex.hIconSm = nullptr;
+    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_APP));
 
     return wcex;
 }
@@ -116,4 +116,6 @@ ATOM win_app::register_class(WNDCLASSEX const& the_class)
     {
         error_msg(L"Run-time exception...", L"Unknown exception");
     }
+
+    return 0;
 }

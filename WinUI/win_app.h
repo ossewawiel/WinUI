@@ -6,7 +6,6 @@
 
 class win_app
 {
-
 	static wil::unique_hmodule _instance;
 	static wil::unique_hmodule _prev_instance;
 	static std::wstring _cmd_line;
@@ -61,5 +60,6 @@ private:
 	//
 
 	friend class win_window;
+	friend class win_bitmap;
 };
 

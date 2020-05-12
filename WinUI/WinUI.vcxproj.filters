@@ -66,6 +66,9 @@
     <ClInclude Include="win_menu_command.h">
       <Filter>win_menus</Filter>
     </ClInclude>
+    <ClInclude Include="win_bitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinUI.cpp">
@@ -98,6 +101,9 @@
     <ClCompile Include="win_menu_command.cpp">
       <Filter>win_menus</Filter>
     </ClCompile>
+    <ClCompile Include="win_bitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinUI.rc">
@@ -109,6 +115,21 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="WinUI.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cut.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="winui1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="app.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="check16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cut16.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

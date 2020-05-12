@@ -14,10 +14,13 @@ public:
 
 private:
 	std::unique_ptr<win_menu_bar> _menu_bar{ nullptr };
+	std::unique_ptr<win_menu_sub> _popup_mnu{ nullptr };
+
 	bool on_close();
 	void on_menu_item_clicked(UINT item_id);
 	void on_menu_item_checked(UINT item_id, bool checked);
 	void on_menu_item_selected(UINT item_id);
+	void on_right_mouse_down(win::enum_virtual_button, win::position);
 
 	enum menu_id
 	{
@@ -47,7 +50,11 @@ private:
 		M_W_FIRST,
 		M_W_SECOND,
 		M_W_THIRD,
-		M_W_FOURTH
+		M_W_FOURTH,
+		M_P_POP1,
+		M_P_POP2,
+		M_P_POP3,
+		M_P_POP4
 	};
 };
 

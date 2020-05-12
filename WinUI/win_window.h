@@ -7,14 +7,22 @@ class win_window : public win_item
 {
 	const std::wstring _win_class{ L"win_window_class" };
 public:
+	struct theme
+	{
+		HBRUSH clr_menubar_bkg{ nullptr };// CreateSolidBrush(RGB(203, 214, 232))
+		HBRUSH clr_window_bkg{ nullptr };// 
+	};
+
+
 	//EVENT CALLBACK TYPEDEFS//
 	using on_close_window_type = std::function<bool()>;
 	using on_menu_item_clicked = std::function<void(UINT)>;
 	using on_menu_item_checked = std::function<void(UINT, BOOL)>;
 	using on_menu_item_selected = std::function<void(UINT)>;
+	using on_right_mouse_down = std::function<void(win::enum_virtual_button, win::position)>;
 
 	//C/D-TORS//
-	win_window(gsl::not_null<win_app*> app, std::wstring title);
+	win_window(gsl::not_null<win_app*> app, std::wstring title, theme the_theme = theme{});
 
 	//PROPERTIES//
 	//TITLE//
@@ -28,6 +36,7 @@ public:
 	void set_on_menu_item_clicked(on_menu_item_clicked func);
 	void set_on_menu_item_checked(on_menu_item_checked func);
 	void set_on_menu_item_selected(on_menu_item_selected func);
+	void set_on_right_mouse_down(on_right_mouse_down func);
 
 	//METHODS//
 	void close();
@@ -41,7 +50,7 @@ private:
 	menu_cmd_map _cmd_type;
 	HMENU _current_menu_item{ nullptr };
 	UINT	_sub_menu_count{ 0 };
-	
+	theme _theme{};
 	
 	//
 	
@@ -64,11 +73,11 @@ private:
 
 	//
 
-	on_close_window_type _on_close_window{};
-	on_menu_item_clicked _on_menu_item_clicked{};
-	on_menu_item_checked _on_menu_item_checked{};
-	on_menu_item_selected _on_menu_item_selected{};
-
+	on_close_window_type	_on_close_window{};
+	on_menu_item_clicked	_on_menu_item_clicked{};
+	on_menu_item_checked	_on_menu_item_checked{};
+	on_menu_item_selected	_on_menu_item_selected{};
+	on_right_mouse_down		_on_right_mouse_down{};
 	//
 
 	friend class win_menu_sub;

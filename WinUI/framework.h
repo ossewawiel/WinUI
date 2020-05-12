@@ -4,6 +4,7 @@
 
 #pragma once
 #include <string>
+#include <sstream>
 #include <vector>
 #include <memory>
 #include <map>
@@ -15,6 +16,7 @@
 # define NOMINMAX
 #endif
 #include <windows.h>
+#include <windowsx.h>
 #include <commctrl.rh>
 // C RunTime Header Files
 #include <cstdlib>

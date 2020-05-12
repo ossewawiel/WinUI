@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "win_menu_command.h"
 #include "win_menu_sub.h"
+#include "win_bitmap.h"
 
 
 win_menu_command::win_menu_command(
@@ -58,32 +59,60 @@ void win_menu_command::enabled(bool val)
 	win::menu_item_enable(_parent, _id, val); 
 }
 
+bool win_menu_command::checked()
+{
+	return win::menu_item_checked(parent(), id());
+}
 
-win_menu_command win_menu_command::construct_action(NN(win_menu_item*) parent, UINT id, std::wstring const& text, bool enabled, bool v_seperator)
+void win_menu_command::checked(bool val)
+{
+	win::menu_item_checked(parent(), id(), val);
+}
+
+
+win_menu_command win_menu_command::construct_action(NN(win_menu_item*) parent, UINT id, std::wstring const& text, UINT icon_id, bool enabled, bool v_seperator)
 {
 	MENUITEMINFO mii{};
 	mii.cbSize = sizeof(MENUITEMINFO);
-	mii.fMask = MIIM_STRING | MIIM_DATA | MIIM_ID | MIIM_STATE | MIIM_FTYPE;
+	mii.fMask = MIIM_STRING | MIIM_ID | MIIM_STATE | MIIM_FTYPE;
+	
 	mii.fType = MFT_STRING;
 	if (v_seperator) mii.fType += MFT_MENUBARBREAK;
 	mii.wID = id;
 	mii.fState = enabled ? MFS_ENABLED : MFS_GRAYED;
 	mii.dwTypeData = const_cast<LPWSTR>(text.c_str());
+	//add bitmap
+	if (icon_id != 0) 
+	{
+		mii.fMask += MIIM_CHECKMARKS;
+		mii.fState += MFS_CHECKED;
+		mii.hbmpChecked = win_bitmap::create_bitmap(icon_id);
+		mii.hbmpUnchecked = nullptr;
+	}
+
 
 	return win_menu_command{parent->handle(), id, mii};
 }
 
 
-win_menu_command win_menu_command::construct_checkable(NN(win_menu_item*) parent, UINT id, std::wstring const& text, bool checked, bool enabled, bool v_seperator)
+win_menu_command win_menu_command::construct_checkable(NN(win_menu_item*) parent, UINT id, std::wstring const& text, UINT bitmap_id, bool checked, bool enabled, bool v_seperator)
 {
 	MENUITEMINFO mii{};
 	mii.cbSize = sizeof(MENUITEMINFO);
-	mii.fMask = MIIM_STRING | MIIM_DATA | MIIM_ID | MIIM_STATE | MIIM_FTYPE;
+	mii.fMask = MIIM_STRING | MIIM_ID | MIIM_STATE | MIIM_FTYPE;
 	mii.fType = MFT_STRING;
 	if (v_seperator) mii.fType += MFT_MENUBARBREAK;
 	mii.wID = id;
 	mii.fState = checked ? MFS_CHECKED : MFS_UNCHECKED;
 	mii.dwTypeData = const_cast<LPWSTR>(text.c_str());
+	//add bitmap
+	if (bitmap_id != 0)
+	{
+		mii.fMask += MIIM_CHECKMARKS;
+		mii.fState += MFS_CHECKED;
+		mii.hbmpChecked = win_bitmap::create_bitmap(bitmap_id);
+		mii.hbmpUnchecked = nullptr;
+	}
 	
 	return win_menu_command{ parent->handle(), id, mii, 0, 0, win::enum_menu_cmd_type::CHECKABLE };
 }
