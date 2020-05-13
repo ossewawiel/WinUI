@@ -4,6 +4,7 @@
 
 #include "win_menu_bar.h"
 #include "win_rebar.h"
+#include "win_toolbar.h"
 #include "demo_app.h"
 
 
@@ -16,7 +17,8 @@ public:
 private:
 	std::unique_ptr<win_menu_bar> _menu_bar{ nullptr };
 	std::unique_ptr<win_menu_sub> _popup_mnu{ nullptr };
-	std::unique_ptr<win_rebar> _rebar{ nullptr };
+	//std::unique_ptr<win_rebar> _rebar{ nullptr };
+	std::unique_ptr<win_toolbar> _toolbar{ nullptr };
 
 	bool on_close();
 	void on_menu_item_clicked(UINT item_id);

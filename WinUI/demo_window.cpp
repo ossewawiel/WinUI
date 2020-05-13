@@ -65,7 +65,8 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	set_on_menu_item_selected(std::bind(&demo_window::on_menu_item_selected, this, std::placeholders::_1));
 	set_on_right_mouse_down(std::bind(&demo_window::on_right_mouse_down, this, std::placeholders::_1, std::placeholders::_2));
 
-	_rebar = std::make_unique<win_rebar>(this);
+	_toolbar = std::make_unique<win_toolbar>(this);
+	_toolbar->add_button(L"New", M_F_NEW, IDB_SAVE16, L"Some Tooltip here");
 }
 
 bool demo_window::on_close()

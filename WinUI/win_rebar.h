@@ -26,6 +26,8 @@ public:
         item_handle(hwndRebar);
 
        item_map().emplace(item_handle(), this);
+
+       
 	}
 
 protected:
