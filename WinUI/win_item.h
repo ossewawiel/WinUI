@@ -5,8 +5,18 @@
 class win_item
 {
 public:
-	win_item(gsl::not_null<win_app*> app): _app{ app }
+	win_item(NN(win_app*) app): _app{ app }
 	{}
+
+	win_item(NN(win_item*) parent) : 
+		_app{ parent->_app },
+		_parent{ parent }
+	{}
+
+	~win_item()
+	{
+		_item_map.erase(_item_handle.get());
+	}
 
 	HWND item_handle() { return _item_handle.get(); }
 
@@ -16,6 +26,9 @@ public:
 	static std::map<HWND, win_item*> item_map() { return _item_map; }
 
 protected:
+
+	
+
 	void create_main_window(
 		HMENU menu
 		, std::wstring const& class_name
@@ -34,23 +47,27 @@ protected:
 			, style
 			, pos
 			, dim);
+
+		win::init_common_controls();
+
 		_item_map.emplace(_item_handle.get(), this);
 	}
 
-	
+	void item_handle(HWND handle) { _item_handle.reset(handle); }
+	HINSTANCE app_handle() { return _app->hinstance(); }
 	
 
 private:
-	win_app* _app{ nullptr };
-	wil::unique_hwnd _item_handle{ nullptr };
-
-	//
-
-	
+	win_app*			_app{ nullptr };
+	wil::unique_hwnd	_item_handle{ nullptr };
+	win_item*			_parent{ nullptr };
 
 	//
 
 	static std::map<HWND, win_item*> _item_map;
+
+	//
+
 };
 
 using win_item_map = std::map<HWND, win_item*>;

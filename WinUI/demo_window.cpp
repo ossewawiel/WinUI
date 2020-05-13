@@ -9,7 +9,7 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	file.add_action(L"&New", M_F_NEW);
 	file.add_action(L"&Open", M_F_OPEN);
 	file.add_seperator();
-	file.add_action(L"&Save", M_F_SAVE);
+	file.add_action(L"&Save\tCtrl+S", IDM_SAVE, IDB_SAVE16, true);
 	file.add_action(L"S&ave as...", M_F_SAVE_AS);
 	file.add_seperator();
 	auto& recent = file.add_sub_menu(L"&Recent");
@@ -22,15 +22,15 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 
 	auto& edit = _menu_bar->add_edit_menu();
 	edit.add_action(L"Cut\tCtrl+X", M_E_CUT, IDB_CUT16, true);
-	edit.add_action(L"Copy\tCtrl+C", M_E_COPY);
+	edit.add_action(L"Copy\tCtrl+C", M_E_COPY, IDB_COPY16, true);
 	edit.add_action(L"Paste\tCtrl+V", M_E_PASTE);
-	edit.add_vertical_seperator();
+	edit.add_seperator();
 	edit.add_action(L"Undo", M_E_UNDO);
 	edit.add_action(L"Redo", M_E_REDO);
-	edit.add_vertical_seperator();
+	edit.add_seperator();
 	edit.add_action(L"&Find", M_E_FIND);
 	edit.add_action(L"Re&place", M_E_REPLACE);
-	edit.add_vertical_seperator();
+	edit.add_seperator();
 	edit.add_action(L"C&lone", M_E_CLONE);
 	edit.add_action(L"&Delete", M_E_DELETE);
 
@@ -50,7 +50,7 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 		{ L"Second Selectable", M_W_SECOND },
 		{ L"Third Selectable", M_W_THIRD },
 		{ L"Fourth Selectable", M_W_FOURTH }
-	});
+	}, IDB_BULLET16);
 
 	_popup_mnu = std::make_unique<win_menu_sub>(this);
 	_popup_mnu->add_action(L"Pop1", M_P_POP1);
@@ -64,6 +64,8 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	set_on_menu_item_checked(std::bind(&demo_window::on_menu_item_checked, this, std::placeholders::_1, std::placeholders::_2));
 	set_on_menu_item_selected(std::bind(&demo_window::on_menu_item_selected, this, std::placeholders::_1));
 	set_on_right_mouse_down(std::bind(&demo_window::on_right_mouse_down, this, std::placeholders::_1, std::placeholders::_2));
+
+	_rebar = std::make_unique<win_rebar>(this);
 }
 
 bool demo_window::on_close()
@@ -75,6 +77,7 @@ void demo_window::on_menu_item_clicked(UINT item_id)
 {
 	switch (item_id)
 	{
+	case IDM_SAVE:
 	case M_F_NEW:
 	case M_F_OPEN:
 	case M_F_SAVE:

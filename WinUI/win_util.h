@@ -176,6 +176,19 @@ namespace win
 		return nullptr;
 	}
 
+	static void init_common_controls()
+	{
+		try
+		{
+			// Initialize common controls.
+			INITCOMMONCONTROLSEX icex;
+			icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
+			icex.dwICC = ICC_COOL_CLASSES | ICC_BAR_CLASSES;
+			THROW_IF_WIN32_BOOL_FALSE(::InitCommonControlsEx(&icex));
+		}
+		CATCH_RUNTIME_WITH_MSG;
+	}
+
 	[[nodiscard]] static int get_window_text_length(HWND handle)
 	{
 		try

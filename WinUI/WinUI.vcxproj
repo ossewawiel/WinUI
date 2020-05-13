@@ -96,6 +96,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -123,12 +124,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,6 +168,7 @@
     <ClInclude Include="win_menu_bar.h" />
     <ClInclude Include="win_msg.h" />
     <ClInclude Include="win_menu_sub.h" />
+    <ClInclude Include="win_rebar.h" />
     <ClInclude Include="win_util.h" />
     <ClInclude Include="win_window.h" />
   </ItemGroup>
@@ -179,6 +183,7 @@
     <ClCompile Include="win_menu_item.cpp" />
     <ClCompile Include="win_menu_bar.cpp" />
     <ClCompile Include="win_menu_sub.cpp" />
+    <ClCompile Include="win_rebar.cpp" />
     <ClCompile Include="win_window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -186,9 +191,13 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico" />
+    <Image Include="bitmap1.bmp" />
+    <Image Include="bullet16.bmp" />
     <Image Include="check16.bmp" />
+    <Image Include="copy16.bmp" />
     <Image Include="cut.ico" />
     <Image Include="cut16.bmp" />
+    <Image Include="save16.bmp" />
     <Image Include="small.ico" />
     <Image Include="WinUI.ico" />
     <Image Include="winui1.ico" />

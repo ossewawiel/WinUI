@@ -70,12 +70,17 @@ void win_menu_command::checked(bool val)
 }
 
 
-win_menu_command win_menu_command::construct_action(NN(win_menu_item*) parent, UINT id, std::wstring const& text, UINT icon_id, bool enabled, bool v_seperator)
+win_menu_command win_menu_command::construct_action(
+	NN(win_menu_item*) parent
+	, UINT id
+	, std::wstring const& text
+	, UINT icon_id
+	, bool enabled
+	, bool v_seperator)
 {
 	MENUITEMINFO mii{};
 	mii.cbSize = sizeof(MENUITEMINFO);
 	mii.fMask = MIIM_STRING | MIIM_ID | MIIM_STATE | MIIM_FTYPE;
-	
 	mii.fType = MFT_STRING;
 	if (v_seperator) mii.fType += MFT_MENUBARBREAK;
 	mii.wID = id;
@@ -95,7 +100,14 @@ win_menu_command win_menu_command::construct_action(NN(win_menu_item*) parent, U
 }
 
 
-win_menu_command win_menu_command::construct_checkable(NN(win_menu_item*) parent, UINT id, std::wstring const& text, UINT bitmap_id, bool checked, bool enabled, bool v_seperator)
+win_menu_command win_menu_command::construct_checkable(
+	NN(win_menu_item*) parent
+	, UINT id
+	, std::wstring const& text
+	, bool checked
+	, UINT bitmap_id
+	, bool enabled
+	, bool v_seperator)
 {
 	MENUITEMINFO mii{};
 	mii.cbSize = sizeof(MENUITEMINFO);
@@ -109,7 +121,6 @@ win_menu_command win_menu_command::construct_checkable(NN(win_menu_item*) parent
 	if (bitmap_id != 0)
 	{
 		mii.fMask += MIIM_CHECKMARKS;
-		mii.fState += MFS_CHECKED;
 		mii.hbmpChecked = win_bitmap::create_bitmap(bitmap_id);
 		mii.hbmpUnchecked = nullptr;
 	}
@@ -118,16 +129,33 @@ win_menu_command win_menu_command::construct_checkable(NN(win_menu_item*) parent
 }
 
 
-win_menu_command win_menu_command::construct_selectable(NN(win_menu_item*) parent, UINT id, std::wstring const& text, UINT first_id, UINT last_id, bool selected, bool enabled, bool v_seperator)
+win_menu_command win_menu_command::construct_selectable(
+	NN(win_menu_item*) parent
+	, UINT id
+	, std::wstring const& text
+	, UINT first_id
+	, UINT last_id
+	, bool selected
+	, UINT bitmap_id
+	, bool enabled
+	, bool v_seperator)
 {
 	MENUITEMINFO mii{};
 	mii.cbSize = sizeof(MENUITEMINFO);
-	mii.fMask = MIIM_STRING | MIIM_DATA | MIIM_ID | MIIM_STATE | MIIM_FTYPE;
-	mii.fType = MFT_STRING | MFT_RADIOCHECK;
+	mii.fMask = MIIM_STRING | MIIM_ID | MIIM_STATE | MIIM_FTYPE;
+	mii.fType = MFT_STRING;
+	if(bitmap_id == 0) mii.fType += MFT_RADIOCHECK;
 	if (v_seperator) mii.fType += MFT_MENUBARBREAK;
 	mii.wID = id;
 	mii.fState = selected ? MFS_CHECKED : MFS_UNCHECKED;
 	mii.dwTypeData = const_cast<LPWSTR>(text.c_str());
+	//add bitmap
+	if (bitmap_id != 0)
+	{
+		mii.fMask += MIIM_CHECKMARKS;
+		mii.hbmpChecked = win_bitmap::create_bitmap(bitmap_id);
+		mii.hbmpUnchecked = nullptr;
+	}
 
 	return win_menu_command{ parent->handle(), id, mii, first_id, last_id, win::enum_menu_cmd_type::SELECTABLE };
 }

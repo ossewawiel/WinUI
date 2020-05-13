@@ -29,7 +29,7 @@ public:
 	void add_seperator();
 	void add_vertical_seperator();
 	win_menu_sub& add_sub_menu(std::wstring const& text, bool enabled = true);
-	void add_selectable_group(UINT selected, std::initializer_list<std::pair<std::wstring, UINT>> items);
+	void add_selectable_group(UINT selected, std::initializer_list<std::pair<std::wstring, UINT>> items, UINT bitmap_id = 0);
 
 private:
 	bool _has_menu_break{ false };

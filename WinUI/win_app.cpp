@@ -58,16 +58,16 @@ int win_app::run()
 { 
     init();  
     
-   //HACCEL hAccelTable = LoadAccelerators(win_app::hinstance(), MAKEINTRESOURCE(IDC_WINUI));
+   HACCEL hAccelTable = LoadAccelerators(win_app::hinstance(), MAKEINTRESOURCE(IDC_WINUI));
    
     MSG msg;
     while (GetMessage(&msg, nullptr, 0, 0))
     {
-        //if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-        //{
+        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
-        //}
+        }
     }
     
     return 1; 

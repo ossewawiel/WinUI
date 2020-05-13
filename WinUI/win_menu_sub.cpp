@@ -69,7 +69,7 @@ void win_menu_sub::add_action(std::wstring const& text, UINT id, UINT icon_id, b
 
 void win_menu_sub::add_checkable(std::wstring const& text, UINT id, UINT bitmap_id, bool checked)
 {
-	window()->menu_cmds().emplace(id, win_menu_command::construct_checkable(this, id, text, bitmap_id, checked, true, _has_menu_break));
+	window()->menu_cmds().emplace(id, win_menu_command::construct_checkable(this, id, text, checked, bitmap_id, true, _has_menu_break));
 	win::draw_menu_bar(window()->item_handle());
 	if (_has_menu_break) _has_menu_break = false;
 }
@@ -94,7 +94,7 @@ win_menu_sub& win_menu_sub::add_sub_menu(std::wstring const& text, bool enabled)
 	return _sub_menus.back();
 }
 
-void win_menu_sub::add_selectable_group(UINT selected, std::initializer_list<std::pair<std::wstring, UINT>> items)
+void win_menu_sub::add_selectable_group(UINT selected, std::initializer_list<std::pair<std::wstring, UINT>> items, UINT bitmap_id)
 {
 	if (items.size() == 0)
 		return;
@@ -113,6 +113,7 @@ void win_menu_sub::add_selectable_group(UINT selected, std::initializer_list<std
 			, first_id
 			, last_id
 			, selected == param.second
+			, bitmap_id
 			, true
 			, _has_menu_break)
 		);

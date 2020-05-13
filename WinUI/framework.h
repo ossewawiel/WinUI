@@ -8,6 +8,7 @@
 #include <vector>
 #include <memory>
 #include <map>
+#include <unordered_map>
 
 #include "targetver.h"
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
@@ -17,6 +18,7 @@
 #endif
 #include <windows.h>
 #include <windowsx.h>
+#include <commctrl.h>
 #include <commctrl.rh>
 // C RunTime Header Files
 #include <cstdlib>
