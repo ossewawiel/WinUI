@@ -19,6 +19,7 @@ public:
 	}
 
 	HWND item_handle() { return _item_handle.get(); }
+	std::map<UINT, std::wstring>& tb_tooltips() { return _tb_tooltips; }
 
 	void show();
 	LRESULT virtual event_handler(UINT, WPARAM, LPARAM) = 0;
@@ -58,15 +59,17 @@ protected:
 	void item_handle(HWND handle) { _item_handle.reset(handle); }
 	HINSTANCE app_handle() { return _app->hinstance(); }
 	
+	win_item* parent() { return _parent; }
 
 private:
 	win_app*			_app{ nullptr };
 	wil::unique_hwnd	_item_handle{ nullptr };
 	win_item*			_parent{ nullptr };
-
+	std::map<UINT, std::wstring> _tb_tooltips;
 	//
 
 	static std::map<HWND, win_item*> _item_map;
+	
 
 	//
 

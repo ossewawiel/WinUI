@@ -74,7 +74,7 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	_toolbar->add_button(L"Copy", M_E_COPY, IDB_COPY16, L"Some Tooltip here");
 	_toolbar->add_button(L"Paste", M_E_PASTE, IDB_PASTE16, L"Some Tooltip here");
 	_toolbar->add_seperator();
-	_toolbar->add_checkable(L"Toggle", M_E_PASTE, IDB_PASTE16, L"Some Tooltip here");
+	_toolbar->add_checkable(L"Toggle", M_E_UNDO, IDB_PASTE16, L"Some Tooltip here");
 }
 
 bool demo_window::on_close()
@@ -120,6 +120,12 @@ void demo_window::on_menu_item_checked(UINT item_id, bool checked)
 	case M_V_T_THIRD:
 	case M_V_T_FOURTH:
 		if(checked)
+			info_msg(L"Menu Item checked", std::to_wstring(item_id));
+		else
+			info_msg(L"Menu Item unchecked", std::to_wstring(item_id));
+		break;
+	case M_E_UNDO:
+		if (checked)
 			info_msg(L"Menu Item checked", std::to_wstring(item_id));
 		else
 			info_msg(L"Menu Item unchecked", std::to_wstring(item_id));

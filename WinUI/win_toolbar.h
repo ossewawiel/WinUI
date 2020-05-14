@@ -6,11 +6,12 @@ class win_toolbar :
 	public win_item
 {
 public:
-	win_toolbar(gsl::not_null<win_item*> parent) :
+	win_toolbar(NN(win_item*) parent) :
 		win_item{ parent }
 	{
+		
 		HWND hWndToolbar = CreateWindowEx(0, TOOLBARCLASSNAME, nullptr,
-			WS_CHILD | WS_VISIBLE | TBSTYLE_FLAT |TBSTYLE_WRAPABLE | TBSTYLE_TOOLTIPS, 0, 0, 0, 0,
+			WS_CHILD | WS_VISIBLE | TBSTYLE_FLAT | TBSTYLE_LIST | TBSTYLE_WRAPABLE | TBSTYLE_TOOLTIPS, 0, 0, 0, 0,
 			parent->item_handle(), NULL, app_handle(), NULL);
 
 		if (hWndToolbar == nullptr)
@@ -18,15 +19,13 @@ public:
 
 		SendMessage(hWndToolbar, TB_AUTOSIZE, 0, 0);
 		::ShowWindow(hWndToolbar, TRUE);
-
 		item_handle(hWndToolbar);
-
 		item_map().emplace(item_handle(), this);
 	}
 
 	void add_button(std::wstring const& title, UINT cmd_id, UINT bitmap_id, std::wstring const& tooltip, bool enabled = true)
 	{
-		::SendMessage(item_handle(), TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
+		
 		TBADDBITMAP tb
 		{
 			nullptr,
@@ -47,10 +46,8 @@ public:
 			, reinterpret_cast<INT_PTR>(title.c_str()) 
 		};
 
-		SendMessage(item_handle(), TB_INSERTBUTTON, _btn_index, reinterpret_cast<INT_PTR>(&btn));
-		++_btn_index;
-		SendMessage(item_handle(), TB_AUTOSIZE, 0, 0);
-		::ShowWindow(item_handle(), TRUE);
+		insert_button(btn);
+		parent()->tb_tooltips().insert(std::make_pair(cmd_id, tooltip));
 	}
 
 	void add_seperator()
@@ -66,15 +63,20 @@ public:
 			, -1
 		};
 
-		SendMessage(item_handle(), TB_INSERTBUTTON, _btn_index, reinterpret_cast<INT_PTR>(&btn));
-		++_btn_index;
-		SendMessage(item_handle(), TB_AUTOSIZE, 0, 0);
+		insert_button(btn);
+	}
+
+	void insert_button(TBBUTTON const& btn)
+	{
+		::SendMessage(item_handle(), TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
+		::SendMessage(item_handle(), TB_INSERTBUTTON, _btn_index, reinterpret_cast<INT_PTR>(&btn));
+		::SendMessage(item_handle(), TB_AUTOSIZE, 0, 0);
 		::ShowWindow(item_handle(), TRUE);
+		++_btn_index;
 	}
 
 	void add_checkable(std::wstring const& title, UINT cmd_id, UINT bitmap_id, std::wstring const& tooltip, bool checked = false, bool enabled = true)
 	{
-		::SendMessage(item_handle(), TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
 		TBADDBITMAP tb
 		{
 			nullptr,
@@ -96,17 +98,14 @@ public:
 			, reinterpret_cast<INT_PTR>(title.c_str())
 		};
 
-		SendMessage(item_handle(), TB_INSERTBUTTON, _btn_index, reinterpret_cast<INT_PTR>(&btn));
-		++_btn_index;
-		SendMessage(item_handle(), TB_AUTOSIZE, 0, 0);
-		::ShowWindow(item_handle(), TRUE);
+		insert_button(btn);
+		parent()->tb_tooltips().insert(std::make_pair(cmd_id, tooltip));
 	}
 
 protected:
 	LRESULT event_handler(UINT msg, WPARAM, LPARAM) override;
 
 private:
-	
 	int	_btn_index{ 0 };
 };
 

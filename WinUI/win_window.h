@@ -49,9 +49,9 @@ protected:
 private:
 	win_app* _app{ nullptr };
 	menu_cmd_map _cmd_type;
-	HMENU _current_menu_item{ nullptr };
 	UINT	_sub_menu_count{ 0 };
 	theme _theme{};
+	
 	
 	//
 	
@@ -83,5 +83,6 @@ private:
 
 	friend class win_menu_sub;
 	friend class win_menu_bar;
+	friend class win_toolbar;
 };
 

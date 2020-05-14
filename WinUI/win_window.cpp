@@ -117,13 +117,13 @@ LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
 	break;
 	case WM_COMMAND:
 	{
-		auto cmd_id = LOWORD(wp);
+		auto const cmd_id = LOWORD(wp);
 		auto& cmd = menu_cmd(cmd_id);
 		switch (cmd.type())
 		{
 		case win::enum_menu_cmd_type::CHECKABLE:
 		{
-			auto checked = win::do_menu_item_checked(cmd.parent(), cmd_id);
+			auto const checked = win::do_menu_item_checked(cmd.parent(), cmd_id);
 			if (_on_menu_item_checked)
 			{
 				_on_menu_item_checked(cmd_id, checked);
@@ -143,6 +143,25 @@ LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
 			break;
 		default:
 			break;
+		}
+	}
+	break;
+	case WM_NOTIFY:
+	{
+		switch (((LPNMHDR)lp)->code)
+		{
+		case TTN_GETDISPINFO:
+		{
+			LPTOOLTIPTEXT lpttt = (LPTOOLTIPTEXT)lp;
+
+			// Set the instance of the module that contains the resource.
+			lpttt->hinst = win_app::hinstance();
+			auto entity_id = lpttt->hdr.idFrom;
+			if (tb_tooltips().count(entity_id) != 0)
+				lpttt->lpszText = const_cast<LPWSTR>(tb_tooltips().at(entity_id).c_str());
+
+			UINT_PTR idButton = lpttt->hdr.idFrom;
+		}
 		}
 	}
 	break;
