@@ -466,4 +466,18 @@ namespace win
 	{
 		return position{ pt.x, pt.y };
 	}
+
+	[[nodiscard]] static HBITMAP generate_transparent_bitmap(HINSTANCE app_handle, UINT bitmap_id, COLORREF transp_color, COLORREF bg_color)
+	{
+		try
+		{
+			COLORMAP colorMap{};
+			colorMap.from = transp_color;
+			colorMap.to = bg_color;
+			HBITMAP hbm = ::CreateMappedBitmap(app_handle, static_cast<INT_PTR>(bitmap_id), 0, &colorMap, 1);
+			if (hbm == nullptr)
+				THROW_LAST_ERROR();
+		}
+		CATCH_RUNTIME_WITH_MSG;
+	}
 }

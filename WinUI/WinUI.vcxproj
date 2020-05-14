@@ -199,6 +199,9 @@
     <Image Include="copy16.bmp" />
     <Image Include="cut.ico" />
     <Image Include="cut16.bmp" />
+    <Image Include="new16.bmp" />
+    <Image Include="open16.bmp" />
+    <Image Include="paste16.bmp" />
     <Image Include="save16.bmp" />
     <Image Include="small.ico" />
     <Image Include="WinUI.ico" />

@@ -6,8 +6,8 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 
 	_menu_bar = std::make_unique<win_menu_bar>(this);
 	auto& file = _menu_bar->add_file_menu();
-	file.add_action(L"&New", M_F_NEW);
-	file.add_action(L"&Open", M_F_OPEN);
+	file.add_action(L"&New", M_F_NEW, IDB_NEW16, true);
+	file.add_action(L"&Open", M_F_OPEN, IDB_OPEN16, true);
 	file.add_seperator();
 	file.add_action(L"&Save\tCtrl+S", IDM_SAVE, IDB_SAVE16, true);
 	file.add_action(L"S&ave as...", M_F_SAVE_AS);
@@ -23,7 +23,7 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	auto& edit = _menu_bar->add_edit_menu();
 	edit.add_action(L"Cut\tCtrl+X", M_E_CUT, IDB_CUT16, true);
 	edit.add_action(L"Copy\tCtrl+C", M_E_COPY, IDB_COPY16, true);
-	edit.add_action(L"Paste\tCtrl+V", M_E_PASTE);
+	edit.add_action(L"Paste\tCtrl+V", M_E_PASTE, IDB_PASTE16, true);
 	edit.add_seperator();
 	edit.add_action(L"Undo", M_E_UNDO);
 	edit.add_action(L"Redo", M_E_REDO);
@@ -66,7 +66,15 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	set_on_right_mouse_down(std::bind(&demo_window::on_right_mouse_down, this, std::placeholders::_1, std::placeholders::_2));
 
 	_toolbar = std::make_unique<win_toolbar>(this);
-	_toolbar->add_button(L"New", M_F_NEW, IDB_SAVE16, L"Some Tooltip here");
+	_toolbar->add_button(L"New", M_F_NEW, IDB_NEW16, L"Some Tooltip here");
+	_toolbar->add_button(L"Open", M_F_OPEN, IDB_OPEN16, L"Some Tooltip here", false);
+	_toolbar->add_button(L"Save", IDM_SAVE, IDB_SAVE16, L"Some Tooltip here");
+	_toolbar->add_seperator();
+	_toolbar->add_button(L"Cut", M_E_CUT, IDB_CUT16, L"Some Tooltip here");
+	_toolbar->add_button(L"Copy", M_E_COPY, IDB_COPY16, L"Some Tooltip here");
+	_toolbar->add_button(L"Paste", M_E_PASTE, IDB_PASTE16, L"Some Tooltip here");
+	_toolbar->add_seperator();
+	_toolbar->add_checkable(L"Toggle", M_E_PASTE, IDB_PASTE16, L"Some Tooltip here");
 }
 
 bool demo_window::on_close()

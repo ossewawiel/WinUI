@@ -1243,7 +1243,7 @@ BOOL OnInitToolbarDialog(HWND hWnd, HWND hWndFocus, LPARAM lParam)
     // Create the Toolbar control
     RECT rc = { 0, 0, 0, 0 };
     HWND hToolbar = CreateWindowEx(0, TOOLBARCLASSNAME, 0,
-        TBSTYLE_FLAT | CCS_ADJUSTABLE | CCS_NODIVIDER | WS_CHILD | WS_VISIBLE,
+        TBSTYLE_FLAT | CCS_ADJUSTABLE | CCS_NODIVIDER | WS_CHILD | WS_VISIBLE | ,
         rc.left, rc.top, rc.right, rc.bottom,
         hWnd, (HMENU)IDC_TOOLBAR, g_hInst, 0);
 

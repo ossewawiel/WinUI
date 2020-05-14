@@ -156,5 +156,14 @@
     <Image Include="save16.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="new16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="open16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="paste16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

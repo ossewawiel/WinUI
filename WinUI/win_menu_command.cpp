@@ -2,6 +2,7 @@
 #include "win_menu_command.h"
 #include "win_menu_sub.h"
 #include "win_bitmap.h"
+#include "win_window.h"
 
 
 win_menu_command::win_menu_command(
@@ -91,7 +92,10 @@ win_menu_command win_menu_command::construct_action(
 	{
 		mii.fMask += MIIM_CHECKMARKS;
 		mii.fState += MFS_CHECKED;
-		mii.hbmpChecked = win_bitmap::create_bitmap(icon_id);
+		mii.hbmpChecked = win::generate_transparent_bitmap(
+			win_app::hinstance()
+			, icon_id, RGB(0, 128, 128)
+			, ::GetSysColor(COLOR_BTNFACE));
 		mii.hbmpUnchecked = nullptr;
 	}
 
@@ -121,7 +125,10 @@ win_menu_command win_menu_command::construct_checkable(
 	if (bitmap_id != 0)
 	{
 		mii.fMask += MIIM_CHECKMARKS;
-		mii.hbmpChecked = win_bitmap::create_bitmap(bitmap_id);
+		mii.hbmpChecked = win::generate_transparent_bitmap(
+			win_app::hinstance()
+			, bitmap_id, RGB(0, 128, 128)
+			, ::GetSysColor(COLOR_BTNFACE));
 		mii.hbmpUnchecked = nullptr;
 	}
 	
@@ -153,7 +160,10 @@ win_menu_command win_menu_command::construct_selectable(
 	if (bitmap_id != 0)
 	{
 		mii.fMask += MIIM_CHECKMARKS;
-		mii.hbmpChecked = win_bitmap::create_bitmap(bitmap_id);
+		mii.hbmpChecked = win::generate_transparent_bitmap(
+			win_app::hinstance()
+			, bitmap_id, RGB(0, 128, 128)
+			, ::GetSysColor(COLOR_BTNFACE));
 		mii.hbmpUnchecked = nullptr;
 	}
 

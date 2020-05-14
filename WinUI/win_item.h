@@ -37,6 +37,8 @@ protected:
 		, win::enum_style style, win::position pos
 		, win::dimensions dim)
 	{
+		win::init_common_controls();
+
 		_item_handle = create_item(
 			_app->hinstance()
 			, nullptr
@@ -48,7 +50,7 @@ protected:
 			, pos
 			, dim);
 
-		win::init_common_controls();
+		
 
 		_item_map.emplace(_item_handle.get(), this);
 	}
