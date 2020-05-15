@@ -58,6 +58,8 @@ bool win_menu_command::enabled()
 void win_menu_command::enabled(bool val) 
 { 
 	win::menu_item_enable(_parent, _id, val); 
+	if(_on_command_enabled)
+		_on_command_enabled(val);
 }
 
 bool win_menu_command::checked()
@@ -68,6 +70,8 @@ bool win_menu_command::checked()
 void win_menu_command::checked(bool val)
 {
 	win::menu_item_checked(parent(), id(), val);
+	if (_on_command_checked)
+		_on_command_checked(val);
 }
 
 
@@ -187,4 +191,14 @@ UINT win_menu_command::first_selectable()
 UINT win_menu_command::last_selectable()
 {
 	return _last_selectable;
+}
+
+void win_menu_command::set_on_command_checked(on_command_checked func)
+{
+	_on_command_checked = func;
+}
+
+void win_menu_command::set_on_command_enabled(on_command_enabled func)
+{
+	_on_command_enabled = func;
 }

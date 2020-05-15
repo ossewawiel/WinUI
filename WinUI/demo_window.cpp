@@ -66,7 +66,7 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	set_on_right_mouse_down(std::bind(&demo_window::on_right_mouse_down, this, std::placeholders::_1, std::placeholders::_2));
 
 	_toolbar = std::make_unique<win_toolbar>(this);
-	_toolbar->add_button(L"New", M_F_NEW, IDB_NEW16, L"Some Tooltip here");
+	_toolbar->add_button(L"New", M_F_NEW, IDB_NEW16, L"Create something new");
 	_toolbar->add_button(L"Open", M_F_OPEN, IDB_OPEN16, L"Some Tooltip here", false);
 	_toolbar->add_button(L"Save", IDM_SAVE, IDB_SAVE16, L"Some Tooltip here");
 	_toolbar->add_seperator();

@@ -8,13 +8,18 @@ class win_menu_sub;
 class win_menu_command
 {
 public:
-	
+	//EVENT CALLBACK TYPEDEFS//
+	using on_command_checked = std::function<void(BOOL)>;
+	using on_command_enabled = std::function<void(BOOL)>;
+
+	//CTOR/DTOR//
 	win_menu_command(win_menu_command&&);
-	
 	virtual ~win_menu_command() = default;
 
+	//OPERATORS//
 	win_menu_command& operator=(win_menu_command&&);
 
+	//PROPERTIES//
 	[[nodiscard]] UINT id() const noexcept { return _id; }
 	[[nodiscard]] win::enum_menu_cmd_type	type() const noexcept { return _type; }
 	[[nodiscard]] HMENU parent() noexcept { return _parent; }
@@ -22,12 +27,15 @@ public:
 	void	enabled(bool val);
 	[[nodiscard]] bool	checked();
 	void	checked(bool val);
-	[[nodiscard]] bool	selected();
-	void	selected(bool val);
 	[[nodiscard]] std::wstring	text();
 	void	text(std::wstring val);
 	[[nodiscard]] UINT first_selectable();
 	[[nodiscard]] UINT last_selectable();
+
+	//EVENT SETTERS//
+	void set_on_command_checked(on_command_checked func);
+	void set_on_command_enabled(on_command_enabled func);
+
 
 	//STATICS//
 	[[nodiscard]] static win_menu_command construct_action(
@@ -62,6 +70,7 @@ protected:
 	
 
 private:
+	//CTOR/DTOR//
 	win_menu_command(
 		NN(HMENU) parent
 		, UINT id
@@ -70,11 +79,15 @@ private:
 		, UINT last_id = 0
 		, win::enum_menu_cmd_type type = win::enum_menu_cmd_type::ACTION);
 
+	//MEMBERS//
 	HMENU	_parent{ nullptr };
 	UINT			_id{ 0 };
 	win::enum_menu_cmd_type _type{ win::enum_menu_cmd_type::ACTION };
 	UINT _first_selectable{ 0 };
 	UINT _last_selectable{ 0 };
+
+	on_command_checked	_on_command_checked{};
+	on_command_enabled	_on_command_enabled{};
 };
 
 

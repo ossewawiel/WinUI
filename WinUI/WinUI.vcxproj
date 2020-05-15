@@ -170,6 +170,7 @@
     <ClInclude Include="win_menu_sub.h" />
     <ClInclude Include="win_rebar.h" />
     <ClInclude Include="win_toolbar.h" />
+    <ClInclude Include="win_toolbar_command.h" />
     <ClInclude Include="win_util.h" />
     <ClInclude Include="win_window.h" />
   </ItemGroup>
@@ -186,6 +187,7 @@
     <ClCompile Include="win_menu_sub.cpp" />
     <ClCompile Include="win_rebar.cpp" />
     <ClCompile Include="win_toolbar.cpp" />
+    <ClCompile Include="win_toolbar_command.cpp" />
     <ClCompile Include="win_window.cpp" />
   </ItemGroup>
   <ItemGroup>
