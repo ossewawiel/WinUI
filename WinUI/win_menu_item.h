@@ -1,5 +1,5 @@
 #pragma once
-
+#include "framework.h"
 class win_window;
 
 class win_menu_item

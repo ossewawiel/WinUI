@@ -22,7 +22,8 @@ public:
 	//PROPERTIES//
 	[[nodiscard]] UINT id() const noexcept { return _id; }
 	[[nodiscard]] win::enum_menu_cmd_type	type() const noexcept { return _type; }
-	[[nodiscard]] HMENU parent() noexcept { return _parent; }
+	[[nodiscard]] HMENU parent() const noexcept { return _parent; }
+	[[nodiscard]] UINT bmp_id() const noexcept { return _bmp_id; }
 	[[nodiscard]] bool	enabled();
 	void	enabled(bool val);
 	[[nodiscard]] bool	checked();
@@ -83,6 +84,7 @@ private:
 	HMENU	_parent{ nullptr };
 	UINT			_id{ 0 };
 	win::enum_menu_cmd_type _type{ win::enum_menu_cmd_type::ACTION };
+	UINT _bmp_id{ 0 };
 	UINT _first_selectable{ 0 };
 	UINT _last_selectable{ 0 };
 
