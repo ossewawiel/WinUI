@@ -8,12 +8,14 @@
 win_menu_command::win_menu_command(
 		NN(HMENU) parent
 		, UINT id
+		, UINT bmp_id
 		, MENUITEMINFO const& mii
 		, UINT first_id
 		, UINT last_id
 		, win::enum_menu_cmd_type type) :
 	_parent{ parent },
 	_id{ id },
+	_bmp_id{ bmp_id },
 	_type{ type },
 	_first_selectable{ first_id },
 	_last_selectable{ last_id }
@@ -26,6 +28,7 @@ win_menu_command::win_menu_command(win_menu_command&& rhs):
 	_parent{ std::move(rhs._parent) },
 	_id{ std::move(rhs._id) },
 	_type{ std::move(rhs._type) },
+	_bmp_id{ std::move(rhs._bmp_id) },
 	_first_selectable{ std::move(rhs._first_selectable) },
 	_last_selectable{ std::move(rhs._last_selectable) }
 {
@@ -40,6 +43,7 @@ win_menu_command& win_menu_command::operator=(win_menu_command&& rhs)
 		std::swap(_parent, rhs._parent);
 		_id = rhs._id;
 		_type = rhs._type;
+		_bmp_id = rhs._bmp_id;
 		_first_selectable = rhs._first_selectable;
 		_last_selectable = rhs._last_selectable;
 
@@ -104,7 +108,7 @@ win_menu_command win_menu_command::construct_action(
 	}
 
 
-	return win_menu_command{parent->handle(), id, mii};
+	return win_menu_command{parent->handle(), id, icon_id, mii};
 }
 
 
@@ -136,7 +140,7 @@ win_menu_command win_menu_command::construct_checkable(
 		mii.hbmpUnchecked = nullptr;
 	}
 	
-	return win_menu_command{ parent->handle(), id, mii, 0, 0, win::enum_menu_cmd_type::CHECKABLE };
+	return win_menu_command{ parent->handle(), id, bitmap_id, mii, 0, 0, win::enum_menu_cmd_type::CHECKABLE };
 }
 
 
@@ -171,7 +175,7 @@ win_menu_command win_menu_command::construct_selectable(
 		mii.hbmpUnchecked = nullptr;
 	}
 
-	return win_menu_command{ parent->handle(), id, mii, first_id, last_id, win::enum_menu_cmd_type::SELECTABLE };
+	return win_menu_command{ parent->handle(), id, bitmap_id, mii, first_id, last_id, win::enum_menu_cmd_type::SELECTABLE };
 }
 
 std::wstring win_menu_command::text()

@@ -16,6 +16,12 @@
     <Filter Include="win_menus">
       <UniqueIdentifier>{a2358065-928e-4775-9e8c-8860befd0e6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NewFilter1">
+      <UniqueIdentifier>{35567112-d168-46f1-9527-878cf5b4d193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win_toolbars">
+      <UniqueIdentifier>{fb68b582-1a9f-4c8b-b71a-7d0e38a0b93d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -73,10 +79,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win_toolbar.h">
-      <Filter>Header Files</Filter>
+      <Filter>win_toolbars</Filter>
     </ClInclude>
     <ClInclude Include="win_toolbar_command.h">
-      <Filter>Header Files</Filter>
+      <Filter>win_toolbars</Filter>
+    </ClInclude>
+    <ClInclude Include="win_toolbar_button.h">
+      <Filter>win_toolbars</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -116,11 +125,14 @@
     <ClCompile Include="win_rebar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_toolbar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win_toolbar_command.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>win_toolbars</Filter>
+    </ClCompile>
+    <ClCompile Include="win_toolbar.cpp">
+      <Filter>win_toolbars</Filter>
+    </ClCompile>
+    <ClCompile Include="win_toolbar_button.cpp">
+      <Filter>win_toolbars</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +181,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="paste16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bitmap2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bmp_new16.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

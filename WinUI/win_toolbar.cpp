@@ -1,4 +1,6 @@
 #include "win_toolbar.h"
+#include "win_toolbar_button.h"
+#include "win_menu_command.h"
 
 win_toolbar::win_toolbar(NN(win_item*) parent) :
 	win_item{ parent }
@@ -17,14 +19,26 @@ win_toolbar::win_toolbar(NN(win_item*) parent) :
 	item_map().emplace(item_handle(), this);
 }
 
+void win_toolbar::add_command(win_menu_command & cmd, std::wstring const& tooltip, std::wstring const& text, UINT bmp_id)
+{
+	_btn_map.emplace(std::pair{ cmd.id(), win_toolbar_command{ this, cmd, _btn_index, tooltip, text, bmp_id } });
+	++_btn_index;
+	parent()->tb_tooltips().insert(std::make_pair(cmd.id(), tooltip));
+	//return *static_cast<win_toolbar_command*>(_btn_map.at(cmd->id()).get());
+}
+
 void win_toolbar::add_button(std::wstring const& title, UINT cmd_id, UINT bitmap_id, std::wstring const& tooltip, bool enabled)
 {
 
-	TBADDBITMAP tb
-	{
-		nullptr,
-		(UINT_PTR)win::generate_transparent_bitmap(win_app::hinstance(), bitmap_id, RGB(0, 128, 128), ::GetSysColor(COLOR_BTNFACE))
-	};
+	TBADDBITMAP tb{};
+
+	tb.hInst = nullptr;
+	tb.nID = (UINT_PTR)win::generate_transparent_bitmap(
+		win_app::hinstance()
+		, bitmap_id
+		, RGB(0, 128, 128)
+		, ::GetSysColor(COLOR_BTNFACE));
+
 	int index = SendMessage(item_handle(), TB_ADDBITMAP, 1, (LPARAM)&tb);
 
 	BYTE state{};
