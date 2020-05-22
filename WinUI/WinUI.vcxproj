@@ -170,6 +170,7 @@
     <ClInclude Include="win_menu_sub.h" />
     <ClInclude Include="win_rebar.h" />
     <ClInclude Include="win_toolbar.h" />
+    <ClInclude Include="win_toolbar_button.h" />
     <ClInclude Include="win_toolbar_command.h" />
     <ClInclude Include="win_util.h" />
     <ClInclude Include="win_window.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="win_menu_sub.cpp" />
     <ClCompile Include="win_rebar.cpp" />
     <ClCompile Include="win_toolbar.cpp" />
+    <ClCompile Include="win_toolbar_button.cpp" />
     <ClCompile Include="win_toolbar_command.cpp" />
     <ClCompile Include="win_window.cpp" />
   </ItemGroup>
@@ -196,6 +198,8 @@
   <ItemGroup>
     <Image Include="app.ico" />
     <Image Include="bitmap1.bmp" />
+    <Image Include="bitmap2.bmp" />
+    <Image Include="bmp_new16.bmp" />
     <Image Include="bullet16.bmp" />
     <Image Include="check16.bmp" />
     <Image Include="copy16.bmp" />

@@ -75,6 +75,7 @@ private:
 	win_menu_command(
 		NN(HMENU) parent
 		, UINT id
+		, UINT bmp_id
 		, MENUITEMINFO const& mii
 		, UINT first_id = 0
 		, UINT last_id = 0
@@ -82,11 +83,11 @@ private:
 
 	//MEMBERS//
 	HMENU	_parent{ nullptr };
-	UINT			_id{ 0 };
+	UINT	_id{ 0 };
 	win::enum_menu_cmd_type _type{ win::enum_menu_cmd_type::ACTION };
-	UINT _bmp_id{ 0 };
-	UINT _first_selectable{ 0 };
-	UINT _last_selectable{ 0 };
+	UINT	_bmp_id{ 0 };
+	UINT	_first_selectable{ 0 };
+	UINT	_last_selectable{ 0 };
 
 	on_command_checked	_on_command_checked{};
 	on_command_enabled	_on_command_enabled{};

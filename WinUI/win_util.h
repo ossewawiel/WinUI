@@ -480,4 +480,12 @@ namespace win
 		}
 		CATCH_RUNTIME_WITH_MSG;
 	}
+
+	static void insert_button(HWND handle, int index, TBBUTTON const& btn)
+	{
+		::SendMessage(handle, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
+		::SendMessage(handle, TB_INSERTBUTTON, index, reinterpret_cast<INT_PTR>(&btn));
+		::SendMessage(handle, TB_AUTOSIZE, 0, 0);
+		::ShowWindow(handle, TRUE);
+	}
 }
