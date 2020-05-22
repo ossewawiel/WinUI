@@ -162,6 +162,12 @@ LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
 
 			UINT_PTR idButton = lpttt->hdr.idFrom;
 		}
+		break;
+		case TBN_DROPDOWN:
+		{
+			LPNMTOOLBAR lpnmtb = (LPNMTOOLBAR)lp;
+		}
+		break;
 		}
 	}
 	break;

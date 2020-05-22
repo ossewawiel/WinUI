@@ -5,57 +5,52 @@
 #include "win_menu_command.h"
 
 win_toolbar_command::win_toolbar_command(
-	NN(win_toolbar*) parent
-	, win_menu_command & mnu_cmd
-	, int pos_index
-	, std::wstring const& tooltip
-	, std::wstring const& text
-	, UINT bmp_id) :
-	win_toolbar_button{
-		parent
-		, mnu_cmd.id()
-		, pos_index
-		, text.empty() ? mnu_cmd.text() : text
-		, bmp_id == 0 ? mnu_cmd.bmp_id() : bmp_id
-		, tooltip }
+		NN(win_toolbar*) parent
+		, int pos_index
+		, UINT cmd_id
+		, std::wstring const& tooltip
+		, std::wstring const& text
+		, win::enum_tlb_cmd_type type
+		, UINT bmp_id
+		, bool enabled) :
+	_parent{parent},
+	_cmd_id{cmd_id},
+	_type{ type },
+	_tooltip{tooltip},
+	_bmp_id{bmp_id},
+	_pos_index{pos_index}
 {
-	mnu_cmd.set_on_command_checked(std::bind(&win_toolbar_command::on_command_checked, this, std::placeholders::_1));
-	mnu_cmd.set_on_command_enabled(std::bind(&win_toolbar_command::on_command_enabled, this, std::placeholders::_1));
 
 	TBADDBITMAP tb{};
 
 	tb.hInst = nullptr;
 	tb.nID = (UINT_PTR)win::generate_transparent_bitmap(
 		win_app::hinstance()
-		, win_toolbar_button::bmp_id()
+		, bmp_id
 		, RGB(0, 128, 128)
 		, ::GetSysColor(COLOR_BTNFACE));
 
 	int index = SendMessage(parent->item_handle(), TB_ADDBITMAP, 1, (LPARAM)&tb);
 
 	BYTE state{};
-	if (mnu_cmd.enabled()) state += TBSTATE_ENABLED;
+	if (enabled) state += TBSTATE_ENABLED;
+	BYTE style = BTNS_AUTOSIZE;
+	if (type == win::enum_tlb_cmd_type::DROPDOWN) style += BTNS_DROPDOWN;
 	TBBUTTON btn
 	{
 		index
-		, cmd_id()
+		, cmd_id
 		, state
-		, BTNS_AUTOSIZE
+		, style
 		, { 0 }
 		, 0L
-		, reinterpret_cast<INT_PTR>(win_toolbar_button::text().c_str())
+		, reinterpret_cast<INT_PTR>(text.c_str())
 	};
 
 	win::insert_button(parent->item_handle(), pos_index, btn);
-	parent->tb_tooltips().insert(std::make_pair(cmd_id(), tooltip));
+	//parent->tb_tooltips().insert(std::make_pair(cmd_id(), tooltip));
 }
 
-void win_toolbar_command::on_command_enabled(bool val)
-{
-	enabled(val);
-}
 
-void win_toolbar_command::on_command_checked(bool val)
-{
-	checked(val);
-}
+
+

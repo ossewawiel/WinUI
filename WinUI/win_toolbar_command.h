@@ -6,46 +6,29 @@
 class win_menu_command;
 class win_toolbar;
 
-class win_toolbar_command:
-	public win_toolbar_button
+class win_toolbar_command
 {
 public:
-	//CTOR/DTOR//
 	win_toolbar_command(
 		NN(win_toolbar*) parent
-		, win_menu_command & mnu_cmd
 		, int pos_index
+		, UINT cmd_id
 		, std::wstring const& tooltip
-		, std::wstring const& text = L""
-		, UINT bmp_id = 0);
-
-	win_toolbar_command(win_toolbar_command&& rhs):
-		win_toolbar_button{ std::move(rhs) },
-		_menu_command{std::move(rhs._menu_command)}
-	{
-		rhs._menu_command = nullptr;
-	}
-
-	win_toolbar_command& operator=(win_toolbar_command&& rhs)
-	{
-		if (this != &rhs)
-		{
-			*this = std::move(rhs);
-			rhs._menu_command = nullptr;
-		}
-		return *this;
-	}
-
-	//PROPERTIES//
-
-
-	
+		, std::wstring const& text
+		, win::enum_tlb_cmd_type type = win::enum_tlb_cmd_type::ACTION
+		, UINT bmp_id = 0
+		, bool enabled = true);
 
 private:
-	win_menu_command*	_menu_command{ nullptr };
+	
 
-	//EVENT METHODS//
-	void on_command_enabled(bool);
-	void on_command_checked(bool);
+	win_toolbar*		_parent{ nullptr };
+	UINT				_cmd_id{ 0 };
+	win::enum_tlb_cmd_type _type{ win::enum_tlb_cmd_type::ACTION };
+	std::wstring		_tooltip{};
+	std::wstring		_text{};
+	UINT				_bmp_id{ 0 };
+	int					_pos_index{ 0 };
+
 };
 

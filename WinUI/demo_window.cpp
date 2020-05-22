@@ -66,7 +66,16 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	set_on_right_mouse_down(std::bind(&demo_window::on_right_mouse_down, this, std::placeholders::_1, std::placeholders::_2));
 
 	_toolbar = std::make_unique<win_toolbar>(this);
-	_toolbar->add_command(menu_cmd(M_F_NEW), L"New Something", L"New", IDB_PASTE16);
+	_toolbar->add_action(L"New", M_F_NEW, IDB_NEW16, L"New whatever", true);
+	_toolbar->add_action(L"Open", M_F_OPEN, IDB_OPEN16, L"Open Whatever", true);
+	_toolbar->add_action(L"Save", IDM_SAVE, IDB_SAVE16, L"Save whatever Ctrl+S", true);
+	_toolbar->add_seperator();
+	_toolbar->add_action(L"Cut", M_E_CUT, IDB_CUT16, L"Cut whatever Ctrl+X", true);
+	_toolbar->add_action(L"Copy", M_E_COPY, IDB_COPY16, L"Copy whatever Ctrl+C", true);
+	_toolbar->add_action(L"Paste", M_E_PASTE, IDB_PASTE16, L"Paste whatever Ctrl+V", true);
+	_toolbar->add_seperator();
+	_toolbar->add_sub_menu(L"Sub", IDB_SAVE16, recent, L"Some sub menu", true);
+
 	//_toolbar->add_command(&menu_cmd(M_F_OPEN), L"Open something");
 	//_toolbar->add_seperator();
 	//_toolbar->add_command(&menu_cmd(IDM_SAVE), L"Save something", L"Save" );

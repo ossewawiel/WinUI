@@ -138,6 +138,14 @@ namespace win
 		SELECTABLE
 	};
 
+	enum class enum_tlb_cmd_type
+	{
+		ACTION,
+		CHECKABLE,
+		SELECTABLE,
+		DROPDOWN
+	};
+
 	
 
 	static wil::unique_hwnd create_item(

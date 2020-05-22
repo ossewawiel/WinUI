@@ -1,8 +1,8 @@
+#include "win_window.h"
 #include "win_toolbar.h"
 #include "win_toolbar_button.h"
-#include "win_menu_command.h"
 
-win_toolbar::win_toolbar(NN(win_item*) parent) :
+win_toolbar::win_toolbar(NN(win_window*) parent) :
 	win_item{ parent }
 {
 
@@ -19,12 +19,11 @@ win_toolbar::win_toolbar(NN(win_item*) parent) :
 	item_map().emplace(item_handle(), this);
 }
 
-void win_toolbar::add_command(win_menu_command & cmd, std::wstring const& tooltip, std::wstring const& text, UINT bmp_id)
+void win_toolbar::add_action(std::wstring const& text, UINT id, UINT icon_id, std::wstring const& tooltip, bool enabled)
 {
-	_btn_map.emplace(std::pair{ cmd.id(), win_toolbar_command{ this, cmd, _btn_index, tooltip, text, bmp_id } });
+	window()->tlb_cmds().emplace(id, win_toolbar_command(this, _btn_index, id, tooltip, text, win::enum_tlb_cmd_type::ACTION, icon_id, enabled));
 	++_btn_index;
-	parent()->tb_tooltips().insert(std::make_pair(cmd.id(), tooltip));
-	//return *static_cast<win_toolbar_command*>(_btn_map.at(cmd->id()).get());
+	parent()->tb_tooltips().emplace(id, tooltip);
 }
 
 void win_toolbar::add_button(std::wstring const& title, UINT cmd_id, UINT bitmap_id, std::wstring const& tooltip, bool enabled)
@@ -114,3 +113,7 @@ LRESULT win_toolbar::event_handler(UINT msg, WPARAM, LPARAM)
 {
 	return 0;
 }
+
+//METHODS//
+
+inline win_window* win_toolbar::window() { return static_cast<win_window*>(parent()); }

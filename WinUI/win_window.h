@@ -2,6 +2,7 @@
 #include "win_app.h"
 #include "win_item.h"
 #include "win_menu_sub.h"
+#include "win_toolbar.h"
 
 class win_window : public win_item
 {
@@ -30,6 +31,8 @@ public:
 	[[nodiscard]] std::wstring title() { return win::get_window_text(item_handle()); }
 	[[nodiscard]] win_menu_command& menu_cmd(UINT cmd);
 	[[nodiscard]] menu_cmd_map& menu_cmds() { return _cmd_type; }
+
+	[[nodiscard]] tlb_cmd_map& tlb_cmds() { return _tlb_cmd; }
 	
 
 	//EVENT SETTERS//
@@ -49,6 +52,7 @@ protected:
 private:
 	win_app* _app{ nullptr };
 	menu_cmd_map _cmd_type;
+	tlb_cmd_map _tlb_cmd;
 	UINT	_sub_menu_count{ 0 };
 	theme _theme{};
 	
