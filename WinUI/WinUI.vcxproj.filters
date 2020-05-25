@@ -42,12 +42,6 @@
     <ClInclude Include="win_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="demo_app.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="demo_window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win_msg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -84,6 +78,9 @@
     <ClInclude Include="win_toolbar_button.h">
       <Filter>win_toolbars</Filter>
     </ClInclude>
+    <ClInclude Include="win_header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinUI.cpp">
@@ -93,12 +90,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win_window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="demo_app.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="demo_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win_item.cpp">
@@ -131,11 +122,6 @@
     <ClCompile Include="win_toolbar_button.cpp">
       <Filter>win_toolbars</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="WinUI.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">

@@ -74,7 +74,12 @@ demo_window::demo_window(gsl::not_null<demo_app*> app, std::wstring title) : win
 	_toolbar->add_action(L"Copy", M_E_COPY, IDB_COPY16, L"Copy whatever Ctrl+C", true);
 	_toolbar->add_action(L"Paste", M_E_PASTE, IDB_PASTE16, L"Paste whatever Ctrl+V", true);
 	_toolbar->add_seperator();
-	_toolbar->add_sub_menu(L"Sub", IDB_SAVE16, recent, L"Some sub menu", true);
+	_toolbar->add_sub_menu(L"Sub", M_E_FIND, &recent, IDB_SAVE16, L"Some sub menu", true);
+	_toolbar->add_seperator();
+	//_toolbar->add_checkable(L"First Checkable", M_V_T_FIRST, IDB_CHECK16);
+	//_toolbar->add_checkable(L"Second Checkable", M_V_T_SECOND, IDB_CHECK16);
+	//_toolbar->add_checkable(L"Third Checkable", M_V_T_THIRD, IDB_CHECK16);
+	//_toolbar->add_checkable(L"Fourth Checkable", M_V_T_FOURTH, IDB_CHECK16);
 
 	//_toolbar->add_command(&menu_cmd(M_F_OPEN), L"Open something");
 	//_toolbar->add_seperator();

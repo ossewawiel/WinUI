@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_ui", "test_ui\test_ui.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cmmnctrls", "cmmnctrls\cmmnctrls.vcxproj", "{3C6A2FD0-7EC6-4326-BD85-1C2AE979D832}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "service_manager", "service_manager\service_manager.vcxproj", "{CDDD1D24-A368-423B-ADE6-6A2F58402CBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{3C6A2FD0-7EC6-4326-BD85-1C2AE979D832}.Release|x64.Build.0 = Release|x64
 		{3C6A2FD0-7EC6-4326-BD85-1C2AE979D832}.Release|x86.ActiveCfg = Release|Win32
 		{3C6A2FD0-7EC6-4326-BD85-1C2AE979D832}.Release|x86.Build.0 = Release|Win32
+		{CDDD1D24-A368-423B-ADE6-6A2F58402CBD}.Debug|x64.ActiveCfg = Debug|x64
+		{CDDD1D24-A368-423B-ADE6-6A2F58402CBD}.Debug|x64.Build.0 = Debug|x64
+		{CDDD1D24-A368-423B-ADE6-6A2F58402CBD}.Debug|x86.ActiveCfg = Debug|Win32
+		{CDDD1D24-A368-423B-ADE6-6A2F58402CBD}.Debug|x86.Build.0 = Debug|Win32
+		{CDDD1D24-A368-423B-ADE6-6A2F58402CBD}.Release|x64.ActiveCfg = Release|x64
+		{CDDD1D24-A368-423B-ADE6-6A2F58402CBD}.Release|x64.Build.0 = Release|x64
+		{CDDD1D24-A368-423B-ADE6-6A2F58402CBD}.Release|x86.ActiveCfg = Release|Win32
+		{CDDD1D24-A368-423B-ADE6-6A2F58402CBD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

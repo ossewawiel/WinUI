@@ -26,6 +26,13 @@ void win_toolbar::add_action(std::wstring const& text, UINT id, UINT icon_id, st
 	parent()->tb_tooltips().emplace(id, tooltip);
 }
 
+void win_toolbar::add_sub_menu(std::wstring const& text, UINT id, NN(win_menu_sub*) sub_menu, UINT icon_id, std::wstring const& tooltip, bool enabled)
+{
+	window()->tlb_cmds().emplace(id, win_toolbar_command(this, _btn_index, id, tooltip, text, win::enum_tlb_cmd_type::DROPDOWN, icon_id, enabled, sub_menu));
+	++_btn_index;
+	parent()->tb_tooltips().emplace(id, tooltip);
+}
+
 void win_toolbar::add_button(std::wstring const& title, UINT cmd_id, UINT bitmap_id, std::wstring const& tooltip, bool enabled)
 {
 

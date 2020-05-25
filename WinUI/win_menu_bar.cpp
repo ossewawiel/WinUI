@@ -25,6 +25,11 @@ win_menu_sub& win_menu_bar::add_edit_menu()
 	return add_sub_menu(L"&Edit", win_window::M_EDIT);
 }
 
+win_menu_sub& win_menu_bar::add_action_menu()
+{
+	return add_sub_menu(L"&Action", win_window::M_ACTION);
+}
+
 win_menu_sub& win_menu_bar::add_view_menu()
 {
 	return add_sub_menu(L"&View", win_window::M_VIEW);
@@ -37,7 +42,7 @@ win_menu_sub& win_menu_bar::add_window_menu()
 
 win_menu_sub& win_menu_bar::add_help_menu()
 {
-	return add_sub_menu(L"&View", win_window::M_HELP);
+	return add_sub_menu(L"&Help", win_window::M_HELP);
 }
 
 win_menu_sub& win_menu_bar::add_sub_menu(std::wstring const& name, UINT id)

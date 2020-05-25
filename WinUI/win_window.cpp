@@ -166,6 +166,24 @@ LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
 		case TBN_DROPDOWN:
 		{
 			LPNMTOOLBAR lpnmtb = (LPNMTOOLBAR)lp;
+			RECT rc{};
+			SendMessage(lpnmtb->hdr.hwndFrom, TB_GETRECT, (WPARAM)lpnmtb->iItem, (LPARAM)&rc);
+			MapWindowPoints(lpnmtb->hdr.hwndFrom, HWND_DESKTOP, (LPPOINT)&rc, 2);
+			auto entity_id = lpnmtb->iItem;
+			if (tlb_cmds().count(entity_id) != 0)
+			{
+			
+				TPMPARAMS tpm;
+
+				tpm.cbSize = sizeof(TPMPARAMS);
+				tpm.rcExclude = rc;
+
+				TrackPopupMenuEx(tlb_cmds().at(entity_id).sub_menu()->handle(),
+					TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_VERTICAL,
+					rc.left, rc.bottom, item_handle() , &tpm);
+
+			}
+
 		}
 		break;
 		}

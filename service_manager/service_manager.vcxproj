@@ -20,20 +20,20 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{6203F755-E1E4-4FB3-8949-61FEDAA9A520}</ProjectGuid>
+    <ProjectGuid>{CDDD1D24-A368-423B-ADE6-6A2F58402CBD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>WinUI</RootNamespace>
+    <RootNamespace>servicemanager</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -72,13 +72,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <CodeAnalysisRuleSet>..\..\optimusmdrn\optimus\ocslutil\allrules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>../include;$(IncludePath)</IncludePath>
+    <LibraryPath>../debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>../include;$(IncludePath)</IncludePath>
+    <LibraryPath>../release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -96,11 +99,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Comctl32.lib;winui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>copy win_*.h ..\include /y</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -110,7 +110,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,11 +133,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Comctl32.lib;winui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>copy win_*.h ..\include /y</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -160,58 +156,29 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="main_dialog.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="service_manager.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="WinUI.h" />
-    <ClInclude Include="win_app.h" />
-    <ClInclude Include="win_bitmap.h" />
-    <ClInclude Include="win_header.h" />
-    <ClInclude Include="win_item.h" />
-    <ClInclude Include="win_main.h" />
-    <ClInclude Include="win_menu_command.h" />
-    <ClInclude Include="win_menu_item.h" />
-    <ClInclude Include="win_menu_bar.h" />
-    <ClInclude Include="win_msg.h" />
-    <ClInclude Include="win_menu_sub.h" />
-    <ClInclude Include="win_rebar.h" />
-    <ClInclude Include="win_toolbar.h" />
-    <ClInclude Include="win_toolbar_button.h" />
-    <ClInclude Include="win_toolbar_command.h" />
-    <ClInclude Include="win_util.h" />
-    <ClInclude Include="win_window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WinUI.cpp" />
-    <ClCompile Include="win_app.cpp" />
-    <ClCompile Include="win_bitmap.cpp" />
-    <ClCompile Include="win_item.cpp" />
-    <ClCompile Include="win_menu_command.cpp" />
-    <ClCompile Include="win_menu_item.cpp" />
-    <ClCompile Include="win_menu_bar.cpp" />
-    <ClCompile Include="win_menu_sub.cpp" />
-    <ClCompile Include="win_rebar.cpp" />
-    <ClCompile Include="win_toolbar.cpp" />
-    <ClCompile Include="win_toolbar_button.cpp" />
-    <ClCompile Include="win_toolbar_command.cpp" />
-    <ClCompile Include="win_window.cpp" />
+    <ClCompile Include="main_dialog.cpp" />
+    <ClCompile Include="service_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="app.ico" />
-    <Image Include="bitmap1.bmp" />
-    <Image Include="bitmap2.bmp" />
-    <Image Include="bmp_new16.bmp" />
-    <Image Include="bullet16.bmp" />
-    <Image Include="check16.bmp" />
-    <Image Include="copy16.bmp" />
-    <Image Include="cut.ico" />
-    <Image Include="cut16.bmp" />
-    <Image Include="new16.bmp" />
-    <Image Include="open16.bmp" />
-    <Image Include="paste16.bmp" />
-    <Image Include="save16.bmp" />
-    <Image Include="small.ico" />
-    <Image Include="WinUI.ico" />
-    <Image Include="winui1.ico" />
+    <ResourceCompile Include="service_manager.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="App-develop.ico" />
+    <Image Include="back16.bmp" />
+    <Image Include="connectpc16.bmp" />
+    <Image Include="export16.bmp" />
+    <Image Include="forward16.bmp" />
+    <Image Include="help16.bmp" />
+    <Image Include="options16.bmp" />
+    <Image Include="refresh16.bmp" />
+    <Image Include="toggleleft16.bmp" />
+    <Image Include="toggleright16.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

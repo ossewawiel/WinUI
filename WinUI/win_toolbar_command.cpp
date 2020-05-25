@@ -12,13 +12,15 @@ win_toolbar_command::win_toolbar_command(
 		, std::wstring const& text
 		, win::enum_tlb_cmd_type type
 		, UINT bmp_id
-		, bool enabled) :
+		, bool enabled
+		, win_menu_sub* sub_menu):
 	_parent{parent},
 	_cmd_id{cmd_id},
 	_type{ type },
 	_tooltip{tooltip},
 	_bmp_id{bmp_id},
-	_pos_index{pos_index}
+	_pos_index{pos_index},
+	_sub_menu{sub_menu}
 {
 
 	TBADDBITMAP tb{};
@@ -32,10 +34,11 @@ win_toolbar_command::win_toolbar_command(
 
 	int index = SendMessage(parent->item_handle(), TB_ADDBITMAP, 1, (LPARAM)&tb);
 
+	bool isdropdown = type == win::enum_tlb_cmd_type::DROPDOWN;
 	BYTE state{};
 	if (enabled) state += TBSTATE_ENABLED;
 	BYTE style = BTNS_AUTOSIZE;
-	if (type == win::enum_tlb_cmd_type::DROPDOWN) style += BTNS_DROPDOWN;
+	if (isdropdown) style += BTNS_WHOLEDROPDOWN;
 	TBBUTTON btn
 	{
 		index
@@ -47,10 +50,11 @@ win_toolbar_command::win_toolbar_command(
 		, reinterpret_cast<INT_PTR>(text.c_str())
 	};
 
-	win::insert_button(parent->item_handle(), pos_index, btn);
+	win::insert_button(parent->item_handle(), pos_index, btn, isdropdown);
 	//parent->tb_tooltips().insert(std::make_pair(cmd_id(), tooltip));
 }
 
 
+         
 
 
