@@ -8,16 +8,6 @@ win_panel::win_panel(NN(win_item*) parent, UINT panel_id):
 
 	_app->register_class(_app->win_class(_panel_class));
 
-	CreateWindowEx(0,
-		L"win_panel_class",
-		(LPCTSTR)NULL,
-		WS_CHILD | WS_BORDER,
-		0, 0, 0, 0,
-		item_handle(),
-		(HMENU)(int)(222),
-		win_app::hinstance(),
-		NULL);
-
 	win_item::_item_handle = win::create_item(
 		win_app::hinstance()
 		, parent->item_handle()

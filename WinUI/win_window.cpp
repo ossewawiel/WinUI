@@ -21,8 +21,7 @@ win_window::win_window(gsl::not_null<win_app*> app, std::wstring title, theme th
 			, win::position{ CW_USEDEFAULT, 0 }
 			, win::dimensions{ CW_USEDEFAULT, 0 });
 
-		::ShowWindow(item_handle(), SW_SHOW);
-		::UpdateWindow(item_handle());
+
 	}
 	CATCH_RUNTIME_WITH_MSG;
 }
@@ -106,15 +105,7 @@ LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
 	break;
 	case WM_CREATE:
 	{
-		CreateWindowEx(0,
-			L"win_panel_class",
-			(LPCTSTR)NULL,
-			WS_CHILD | WS_BORDER,
-			0, 0, 0, 0,
-			item_handle(),
-			(HMENU)(int)(222),
-			win_app::hinstance(),
-			NULL);
+
 	}
 	break;
 	case WM_RBUTTONDOWN:
