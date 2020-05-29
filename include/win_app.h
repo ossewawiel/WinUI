@@ -50,7 +50,7 @@ private:
 
 	//
 
-	WNDCLASSEX win_class(std::wstring const& name) noexcept;
+	WNDCLASSEX win_class(std::wstring const& name, UINT icon_id = 0) noexcept;
 	ATOM register_class(WNDCLASSEX const& the_class);
 
 	//
@@ -61,5 +61,6 @@ private:
 
 	friend class win_window;
 	friend class win_bitmap;
+	friend class win_panel;
 };
 

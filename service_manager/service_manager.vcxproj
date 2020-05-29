@@ -169,16 +169,24 @@
     <ResourceCompile Include="service_manager.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="App-desktop-share.ico" />
     <Image Include="App-develop.ico" />
     <Image Include="back16.bmp" />
+    <Image Include="check16.bmp" />
+    <Image Include="config16.bmp" />
     <Image Include="connectpc16.bmp" />
     <Image Include="export16.bmp" />
     <Image Include="forward16.bmp" />
     <Image Include="help16.bmp" />
     <Image Include="options16.bmp" />
+    <Image Include="pause16.bmp" />
+    <Image Include="play16.bmp" />
     <Image Include="refresh16.bmp" />
+    <Image Include="restart16.bmp" />
+    <Image Include="stop16.bmp" />
     <Image Include="toggleleft16.bmp" />
     <Image Include="toggleright16.bmp" />
+    <Image Include="toolbox16.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

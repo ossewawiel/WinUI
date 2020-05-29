@@ -10,6 +10,7 @@
 
 void service_manager::init()
 {
+	 
 	_main_dlg = std::make_unique<main_dialog>(this, L"WIN Service Manager");
 	_main_dlg->show();
 }

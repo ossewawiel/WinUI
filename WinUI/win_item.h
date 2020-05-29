@@ -60,15 +60,17 @@ protected:
 	HINSTANCE app_handle() { return _app->hinstance(); }
 	
 	win_item* parent() { return _parent; }
-
-private:
-	win_app*			_app{ nullptr };
 	wil::unique_hwnd	_item_handle{ nullptr };
+	static std::map<HWND, win_item*> _item_map;
+	win_app* _app{ nullptr };
+private:
+	
+	
 	win_item*			_parent{ nullptr };
 	std::map<UINT, std::wstring> _tb_tooltips;
 	//
 
-	static std::map<HWND, win_item*> _item_map;
+	
 	
 
 	//

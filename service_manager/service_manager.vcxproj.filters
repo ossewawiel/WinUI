@@ -75,5 +75,29 @@
     <Image Include="help16.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="play16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="stop16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="pause16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="restart16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="config16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="toolbox16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="App-desktop-share.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="check16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

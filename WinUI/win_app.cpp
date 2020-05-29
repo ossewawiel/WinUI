@@ -73,7 +73,7 @@ int win_app::run()
     return 1; 
 }
 
-WNDCLASSEX win_app::win_class(std::wstring const& name) noexcept
+WNDCLASSEX win_app::win_class(std::wstring const& name, UINT icon_id) noexcept
 {
     WNDCLASSEXW wcex{};
 
@@ -84,12 +84,12 @@ WNDCLASSEX win_app::win_class(std::wstring const& name) noexcept
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = _instance.get();
-    wcex.hIcon = LoadIcon(nullptr, MAKEINTRESOURCE(IDI_APP));;
+    wcex.hIcon = LoadIcon(nullptr, MAKEINTRESOURCE(icon_id));;
     wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground = nullptr;
     wcex.lpszMenuName = nullptr;
     wcex.lpszClassName = name.c_str();
-    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_APP));
+    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(icon_id));
 
     return wcex;
 }

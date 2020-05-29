@@ -11,14 +11,20 @@ public:
 private:
 	std::unique_ptr<win_menu_bar> _mnu_bar{ nullptr };
 	std::unique_ptr<win_toolbar> _toolbar{ nullptr };
+	std::unique_ptr<win_panel> _main_panel{ nullptr };
 
 	enum cmd_id
 	{
 		M_F_OPTIONS,
 		M_F_EXIT,
+		M_A_PLAY,
+		M_A_STOP,
+		M_A_PAUSE,
+		M_A_RESTART,
 		M_A_CONNECT,
 		M_A_REFRESH,
 		M_A_EXPORT_LST,
+		M_A_PROPS,
 		M_A_HELP,
 		M_V_ADD_REM_COLS,
 		M_V_LARGE,
@@ -32,6 +38,12 @@ private:
 		T_TGGL_NAV,
 		T_TGGL_ACT
 		
+		
+	};
+
+	enum pnl_id
+	{
+		PNL_MAIN
 	};
 };
 

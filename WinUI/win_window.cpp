@@ -10,7 +10,7 @@ win_window::win_window(gsl::not_null<win_app*> app, std::wstring title, theme th
 {
 	try
 	{
-		_app->register_class(_app->win_class(_win_class));
+		_app->register_class(_app->win_class(_win_class, the_theme.app_icon_id));
 
 		win_item::create_main_window(
 			nullptr
@@ -20,6 +20,9 @@ win_window::win_window(gsl::not_null<win_app*> app, std::wstring title, theme th
 			, win::enum_style::OVERLAPPEDWINDOW
 			, win::position{ CW_USEDEFAULT, 0 }
 			, win::dimensions{ CW_USEDEFAULT, 0 });
+
+		::ShowWindow(item_handle(), SW_SHOW);
+		::UpdateWindow(item_handle());
 	}
 	CATCH_RUNTIME_WITH_MSG;
 }
@@ -74,10 +77,46 @@ void win_window::close()
 	}
 }
 
+BOOL CALLBACK win_window::EnumChildProc(HWND hwndChild, LPARAM lParam)
+{
+	LPRECT rcParent;
+	rcParent = (LPRECT)lParam;
+	::MoveWindow(hwndChild,
+		5,
+		5,
+		rcParent->right - 5,
+		rcParent->bottom - 5,
+		TRUE);
+
+	::ShowWindow(hwndChild, SW_SHOW);
+
+	return TRUE;
+}
+
 LRESULT win_window::event_handler(UINT msg, WPARAM wp, LPARAM lp)
 {
 	switch (msg)
 	{
+	case WM_SIZE:
+	{
+		RECT rcClient{};
+		::GetClientRect(item_handle(), &rcClient);
+		::EnumChildWindows(item_handle(), win_window::EnumChildProc, (LPARAM)&rcClient);
+	}
+	break;
+	case WM_CREATE:
+	{
+		CreateWindowEx(0,
+			L"win_panel_class",
+			(LPCTSTR)NULL,
+			WS_CHILD | WS_BORDER,
+			0, 0, 0, 0,
+			item_handle(),
+			(HMENU)(int)(222),
+			win_app::hinstance(),
+			NULL);
+	}
+	break;
 	case WM_RBUTTONDOWN:
 	{
 		if (_on_right_mouse_down)

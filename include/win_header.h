@@ -26,3 +26,4 @@
 #include "win_app.h"
 #include "win_window.h"
 #include "win_menu_bar.h"
+#include "win_panel.h"

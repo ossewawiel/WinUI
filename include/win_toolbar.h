@@ -13,7 +13,7 @@ public:
 	void add_sub_menu(std::wstring const& text, UINT id, NN(win_menu_sub*) sub_menu, UINT icon_id, std::wstring const& tooltip, bool enabled = true);
 	void add_button(std::wstring const& title, UINT cmd_id, UINT bitmap_id, std::wstring const& tooltip, bool enabled = true);
 	void add_seperator();
-	void insert_button(TBBUTTON const& btn);
+	void insert_button(TBBUTTON const& btn, bool auto_size = true);
 	void add_checkable(std::wstring const& title, UINT cmd_id, UINT bitmap_id, std::wstring const& tooltip, bool checked = false, bool enabled = true);
 
 protected:

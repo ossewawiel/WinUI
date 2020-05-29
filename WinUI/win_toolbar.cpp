@@ -68,7 +68,7 @@ void win_toolbar::add_seperator()
 {
 	TBBUTTON btn
 	{
-		16
+		8
 		, 0
 		, TBSTATE_ENABLED
 		, BTNS_SEP
@@ -77,14 +77,14 @@ void win_toolbar::add_seperator()
 		, -1
 	};
 
-	insert_button(btn);
+	insert_button(btn, false);
 }
 
-void win_toolbar::insert_button(TBBUTTON const& btn)
+void win_toolbar::insert_button(TBBUTTON const& btn, bool auto_size)
 {
 	::SendMessage(item_handle(), TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
 	::SendMessage(item_handle(), TB_INSERTBUTTON, _btn_index, reinterpret_cast<INT_PTR>(&btn));
-	::SendMessage(item_handle(), TB_AUTOSIZE, 0, 0);
+	if(auto_size) ::SendMessage(item_handle(), TB_AUTOSIZE, 0, 0);
 	::ShowWindow(item_handle(), TRUE);
 	++_btn_index;
 }

@@ -173,6 +173,7 @@
     <ClInclude Include="win_menu_bar.h" />
     <ClInclude Include="win_msg.h" />
     <ClInclude Include="win_menu_sub.h" />
+    <ClInclude Include="win_panel.h" />
     <ClInclude Include="win_rebar.h" />
     <ClInclude Include="win_toolbar.h" />
     <ClInclude Include="win_toolbar_button.h" />
@@ -189,6 +190,7 @@
     <ClCompile Include="win_menu_item.cpp" />
     <ClCompile Include="win_menu_bar.cpp" />
     <ClCompile Include="win_menu_sub.cpp" />
+    <ClCompile Include="win_panel.cpp" />
     <ClCompile Include="win_rebar.cpp" />
     <ClCompile Include="win_toolbar.cpp" />
     <ClCompile Include="win_toolbar_button.cpp" />

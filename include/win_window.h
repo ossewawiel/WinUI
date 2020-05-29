@@ -10,6 +10,7 @@ class win_window : public win_item
 public:
 	struct theme
 	{
+		UINT app_icon_id{ 0 };
 		HBRUSH clr_menubar_bkg{ nullptr };// CreateSolidBrush(RGB(203, 214, 232))
 		HBRUSH clr_window_bkg{ nullptr };// 
 	};
@@ -84,6 +85,11 @@ private:
 	on_menu_item_checked	_on_menu_item_checked{};
 	on_menu_item_selected	_on_menu_item_selected{};
 	on_right_mouse_down		_on_right_mouse_down{};
+
+	//
+
+	static BOOL CALLBACK EnumChildProc(HWND hwndChild, LPARAM lParam);
+
 	//
 
 	friend class win_menu_sub;
